@@ -1,8 +1,8 @@
 # Vim generated stuff
-.vim/plugged/
-.vim/backup/
-.vim/swap/
-.vim/undo/
+vim/.vim/plugged/
+vim/.vim/backup/
+vim/.vim/swap/
+vim/.vim/undo/
 
 *.swp
 *.swo

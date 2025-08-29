@@ -1,0 +1,44 @@
+[user]
+
+    name = sebacruz1
+    email = sebastiancruzpomar@gmail.com
+
+[core]
+    editor = vim
+    autocrlf = input
+    excludesfile = ~/.gitignore_global
+    filemode = false
+
+[color]
+    ui = auto
+
+[init]
+    defaultBranch = main
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    last = log -1 HEAD
+    lg = log --oneline --graph --decorate --all
+    unstage = reset HEAD --
+    amend = commit --amend --no-edit
+    save = stash push -m "WIP"
+    unsave = stash pop
+    changes = diff --cached
+    ls = ls-files
+
+[diff]
+    tool = vimdiff
+
+[merge]
+    tool = vimdiff
+
+[push]
+    default = simple
+
+[pager]
+  diff = diff-so-fancy | less --tabs=4 -RFX
+  log  = diff-so-fancy | less --tabs=4 -RFX
+  show = diff-so-fancy | less --tabs=4 -RFX

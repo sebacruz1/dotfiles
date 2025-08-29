@@ -1,0 +1,73 @@
+# ====================================
+# Archivos universales a ignorar
+# ====================================
+
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# ---- Windows ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---- Linux ----
+.Trash-*
+
+.env
+.env.*
+*.env
+!.env.example
+
+*.swp
+*.swo
+*.un~
+Session.vim
+*.nvimlog
+
+
+# ---- IDEs ----
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.iml
+
+# ---- Logs ----
+*.log
+
+# ---- Compilación / binarios ----
+*.o
+*.so
+*.obj
+*.dll
+*.exe
+*.out
+*.class
+*.pyc
+__pycache__/
+
+# ---- Node.js ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Python virtualenvs ----
+.venv
+venv/
+ENV/
+env/
+
+# ---- Rust ----
+target/
+
+# ---- Go ----
+bin/
+

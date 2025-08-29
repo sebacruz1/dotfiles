@@ -1,0 +1,10 @@
+# Vim generated stuff
+.vim/plugged/
+.vim/backup/
+.vim/swap/
+.vim/undo/
+
+*.swp
+*.swo
+.DS_Store
+

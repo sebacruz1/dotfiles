@@ -4,6 +4,8 @@ vim/.vim/backup/
 vim/.vim/swap/
 vim/.vim/undo/
 
+.antidote/
+
 *.swp
 *.swo
 .DS_Store

@@ -60,6 +60,28 @@ cd ~/Documentos/dotfiles
 ./install.sh
 ```
 
+---
+
+## 🧹 Limpieza previa (opcional)
+
+Si al correr `./install.sh` ves errores de **Stow** como:
+
+```bash
+WARNING! stowing shell would cause conflicts:
+ * cannot stow .../.zprofile over existing target .zprofile
+ * cannot stow .../.zshrc over existing target .zshrc
+All operations aborted.
+
+```
+
+significa que ya tienes dotfiles en tu `$HOME` que entran en conflicto.
+Para resolverlo fácilmente, este repo incluye un script de limpieza:
+
+```bash
+./cleanup.sh
+./install.sh
+
+
 El script detecta tu sistema operativo, instala dependencias y enlaza los dotfiles en tu `$HOME` usando **GNU Stow**.
 
 ### Arch Linux

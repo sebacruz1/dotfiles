@@ -13,19 +13,15 @@ export EDITOR=vim
 # ------------------------------------------------------------
 # SO detection + paths (funciona en macOS y Arch)
 # ------------------------------------------------------------
-# macOS (brew en Apple Silicon) o Intel
+
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
   # Completions de brew
   [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
 fi
 
-# Arch Linux (y otras distros que usan el estándar)
 [[ -d /usr/share/zsh/site-functions ]] && fpath+=("/usr/share/zsh/site-functions")
 
-# ------------------------------------------------------------
-# Inicializar autocompletado ANTES de cargar plugins
-# ------------------------------------------------------------
 autoload -Uz compinit
 compinit -i   # usa -i para ignorar compdefs inválidos
 
@@ -85,6 +81,7 @@ zle -N bracketed-paste bracketed-paste-magic
 # ==== Aliases/Functions (Stow los deja en $HOME)
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
+[ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
 
 # ==== p10k config
 [[ -r ~/.p10k.zsh ]] && source ~/.p10k.zsh

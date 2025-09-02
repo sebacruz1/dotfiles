@@ -21,6 +21,10 @@ backup() {
     log "Backup de ~/$p -> ~/.dotfiles_backup/"
   fi
 }
+setup_runtime() {
+  mkdir -p "$HOME/.vim"/{swap,undo,backup}
+  chmod 700 "$HOME/.vim"/{swap,undo,backup} 2>/dev/null || true
+}
 
 ### ===============================
 ### paquetes por SO
@@ -167,6 +171,7 @@ main() {
 
   apply_stow
   setup_git
+  setup_runtime
   ensure_tpm
   final_tips
 }

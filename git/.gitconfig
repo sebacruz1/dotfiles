@@ -6,7 +6,7 @@
 [core]
     editor = vim
     autocrlf = input
-	excludesfile = /Users/seba/.gitignore_global
+	excludesfile = ~/.gitignore_global
     filemode = false
 
 [color]
@@ -42,3 +42,5 @@
   diff = diff-so-fancy | less --tabs=4 -RFX
   log  = diff-so-fancy | less --tabs=4 -RFX
   show = diff-so-fancy | less --tabs=4 -RFX
+
+

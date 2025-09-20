@@ -34,6 +34,9 @@ Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-sleuth'
 Plug 'editorconfig/editorconfig-vim'
 
+Plug 'tpope/vim-surround'
+Plug 'neoclide/vim-jsx-improve'
+
 call plug#end()
 
 " ===== Mapeos de plugins =====

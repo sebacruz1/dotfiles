@@ -15,9 +15,9 @@ set timeoutlen=400
 set ignorecase smartcase
 set incsearch hlsearch
 " ===== Tabs / Indent =====
+filetype plugin indent on
 set expandtab shiftwidth=2 tabstop=2
 set autoindent smartindent
-
 " ===== Portapapeles / Persistencia =====
 set undofile | set undodir=~/.vim/undo//
 set backupdir=~/.vim/backup// | set directory=~/.vim/swap//
@@ -40,6 +40,16 @@ nnoremap [q :cprev<CR>
 " ===== Statusline simple =====
 set laststatus=2
 set statusline=%f\ %m%r%h%w%=\ [%{&filetype}]\ %y\ %p%%\ %l:%c
+"
+" No continuar comentarios automáticamente
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+" Toggle de paste manual
+set pastetoggle=<F2>
+
+" Pegar con Cmd+V / Ctrl+V sin autoindent
+inoremap <C-v> <C-o>:set paste<CR><C-r>+<C-o>:set nopaste<CR>
+
 
 if filereadable(expand("~/.vim/my_configs.vim"))
   source ~/.vim/my_configs.vim

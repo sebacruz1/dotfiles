@@ -36,6 +36,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 Plug 'tpope/vim-surround'
 Plug 'neoclide/vim-jsx-improve'
+Plug 'dense-analysis/ale'
 
 call plug#end()
 

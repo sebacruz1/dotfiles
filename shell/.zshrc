@@ -82,7 +82,7 @@ zle -N bracketed-paste bracketed-paste-magic
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
-
+export PATH="/usr/local/mysql/bin:$PATH"
 # ==== p10k config
 [[ -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
 

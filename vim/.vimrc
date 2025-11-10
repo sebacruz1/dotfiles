@@ -36,6 +36,7 @@ nnoremap <leader>co :copen<CR>
 nnoremap <leader>cc :cclose<CR>
 nnoremap ]q :cnext<CR>
 nnoremap [q :cprev<CR>
+nnoremap <leader>tv :!tmux split-window -h "vim -R %"<CR>
 
 " ===== Statusline simple =====
 set laststatus=2

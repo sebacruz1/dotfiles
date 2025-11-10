@@ -17,7 +17,6 @@ $RECYCLE.BIN/
 
 # ---- Linux ----
 .Trash-*
-
 .env
 .env.*
 *.env

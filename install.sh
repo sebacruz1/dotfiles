@@ -153,7 +153,7 @@ final_tips() {
   echo -e "${BLUE}Siguientes pasos recomendados:${NC}"
   echo "  - Abre una nueva shell para que se apliquen los cambios."
   echo "  - En tmux: presiona 'prefix + I' para instalar plugins (TPM)."
-  echo "  - En Vim: corre ':PlugInstall' si usas vim-plug."
+  echo "  - En Neovim: corre ':Lazy sync' para sincronizar los plugins."
 }
 
 main() {

@@ -11,7 +11,6 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Detección de archivos Blade para Laravel
 vim.filetype.add({
 	pattern = {
 		[".*%.blade%.php"] = "blade",
@@ -21,14 +20,13 @@ vim.filetype.add({
 require("lazy").setup({
 	-- --- Apariencia ---
 	{
-		"catppuccin/nvim",
-		name = "catppuccin",
+		"rebelot/kanagawa.nvim",
+		name = "kanagawa",
 		priority = 1000,
 		config = function()
-			vim.cmd("colorscheme catppuccin-mocha")
+			vim.cmd("colorscheme kanagawa-dragon")
 		end,
 	},
-
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -241,4 +239,3 @@ require("lazy").setup({
 }, {
 	checker = { enabled = true },
 })
-

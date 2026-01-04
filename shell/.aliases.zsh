@@ -8,4 +8,5 @@ cs() {
 }
 alias python='python3'; alias pip='pip3'
 alias please='sudo $(fc -ln -1)'
+alias vim='nvim'
 

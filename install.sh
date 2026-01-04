@@ -35,7 +35,6 @@ install_macos() {
     log "Instalando Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ok "Homebrew instalado."
-    # agregar brew al PATH en esta sesión
     if [[ -x /opt/homebrew/bin/brew ]]; then
       eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
@@ -49,7 +48,6 @@ install_macos() {
     warn "No se encontró Brewfile.mac. Saltando."
   fi
 
-  # fzf post-install (keybindings/completion)
   if brew list fzf >/dev/null 2>&1; then
     log "Configurando fzf keybindings/completion..."
     "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc || true

@@ -6,7 +6,7 @@
 [core]
     editor = vim
     autocrlf = input
-	excludesfile = /Users/seba/.gitignore_global
+    excludesfile = /Users/seba/.gitignore_global
     filemode = false
 
 [color]

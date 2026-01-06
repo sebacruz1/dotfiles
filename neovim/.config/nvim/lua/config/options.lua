@@ -47,3 +47,18 @@ opt.undofile = true -- Importante: habilita el guardado de undo persistente
 -- integración y otros
 opt.clipboard = "unnamedplus"
 opt.showmode = false
+
+vim.diagnostic.config({
+	virtual_text = {
+		prefix = "●",
+		spacing = 4,
+	},
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+	float = {
+		border = "rounded",
+		source = "always",
+	},
+})

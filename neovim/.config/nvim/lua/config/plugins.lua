@@ -41,7 +41,10 @@ require("lazy").setup({
 		config = function()
 			require("nvim-tree").setup({
 				hijack_netrw = true,
-				view = { width = 35 },
+				view = {
+					width = 30,
+					side = "right",
+				},
 				renderer = { group_empty = true },
 				git = { enable = true },
 			})
@@ -65,8 +68,8 @@ require("lazy").setup({
 		end,
 	},
 
-	-- --- Autocompletado Moderno (Blink.cmp) ---
 	{
+		-- --- Autocompletado Moderno (Blink.cmp) ---
 		"saghen/blink.cmp",
 		dependencies = "rafamadriz/friendly-snippets",
 		version = "*",

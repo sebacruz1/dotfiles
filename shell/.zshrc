@@ -8,7 +8,7 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
 setopt sharehistory histignoredups histignorespace extendedglob
-export EDITOR=vim
+export EDITOR=nvim
 
 # ------------------------------------------------------------
 # SO detection + paths (funciona en macOS y Arch)
@@ -16,7 +16,6 @@ export EDITOR=vim
 
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
-  # Completions de brew
   [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
 fi
 
@@ -30,7 +29,6 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*'
 zstyle ':completion:*' completer _extensions _complete _approximate
 
-# ==== Antidote bootstrap
 if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
   git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
 fi
@@ -42,17 +40,12 @@ if [[ ! -f "$ZPLUGINS" ]]; then
   cat > "$ZPLUGINS" <<'EOF'
 romkatv/powerlevel10k
 zdharma-continuum/fast-syntax-highlighting
-# En macOS usamos completion de Docker vía plugin:
 docker/cli           kind:completion
-# Plugin git de Oh My Zsh
 ohmyzsh/ohmyzsh path:plugins/git
 EOF
 fi
 
-# ==== Cargar plugins (elige UNA forma; esta usa carga directa)
 antidote load
-# Alternativa (cache explícito):
-# antidote bundle < "$ZPLUGINS" > ~/.zsh_plugins.zsh
 # source ~/.zsh_plugins.zsh
 
 # ------------------------------------------------------------
@@ -68,17 +61,12 @@ fi
 [[ -r /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 [[ -r /usr/share/fzf/completion.zsh   ]] && source /usr/share/fzf/completion.zsh
 
-# ------------------------------------------------------------
-# Modo vi + asegurar que TAB completa
-# ------------------------------------------------------------
 bindkey -v
 bindkey '^I' expand-or-complete
 
-# Bracketed paste (pegado “seguro”)
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
-# ==== Aliases/Functions (Stow los deja en $HOME)
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
@@ -86,3 +74,6 @@ export PATH="/usr/local/mysql/bin:$PATH"
 # ==== p10k config
 [[ -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
+
+# Composer PHP
+export PATH=$PATH:$HOME/.config/composer/vendor/bin

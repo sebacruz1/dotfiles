@@ -1,3 +1,4 @@
+brew "neovim"
 brew "diff-so-fancy"
 brew "eza"
 brew "fd"

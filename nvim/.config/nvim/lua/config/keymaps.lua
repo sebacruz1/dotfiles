@@ -1,0 +1,36 @@
+vim.g.mapleader = ","
+local map = vim.keymap.set
+
+-- básicos
+map("n", "<leader>w", "<cmd>w<CR>", { silent = true })
+map("n", "<leader>q", "<cmd>q<CR>", { silent = true })
+map("n", "<leader>h", "<cmd>nohlsearch<CR>", { silent = true })
+
+map("n", "<C-h>", "<C-w>h", { silent = true })
+map("n", "<C-j>", "<C-w>j", { silent = true })
+map("n", "<C-k>", "<C-w>k", { silent = true })
+map("n", "<C-l>", "<C-w>l", { silent = true })
+
+map("n", "<leader>co", "<cmd>copen<CR>", { silent = true })
+map("n", "<leader>cc", "<cmd>cclose<CR>", { silent = true })
+map("n", "]q", "<cmd>cnext<CR>", { silent = true })
+map("n", "[q", "<cmd>cprev<CR>", { silent = true })
+
+local function open_in_tmux_at_line(direction)
+	local line = vim.fn.line(".")
+	local file = vim.fn.expand("%:p")
+	local flag = (direction == "vertical") and "-h" or "-v"
+
+	-- Construcción del comando para nvim (neovim)
+	local cmd = string.format('silent !tmux split-window %s "nvim -R +%d %s"', flag, line, file)
+	vim.cmd(cmd)
+end
+
+-- Atajos de teclado
+vim.keymap.set("n", "<leader>tv", function()
+	open_in_tmux_at_line("vertical")
+end, { desc = "Tmux: Abrir actual a la derecha (RO + Línea)", silent = true })
+
+vim.keymap.set("n", "<leader>th", function()
+	open_in_tmux_at_line("horizontal")
+end, { desc = "Tmux: Abrir actual abajo (RO + Línea)", silent = true })

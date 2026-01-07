@@ -52,6 +52,16 @@ require("lazy").setup({
 			map("n", "<leader>n", "<cmd>NvimTreeToggle<CR>", { silent = true })
 			map("n", "<leader>f", "<cmd>NvimTreeFindFile<CR>", { silent = true })
 		end,
+		{
+			"kylechui/nvim-surround",
+			version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
+			event = "VeryLazy",
+			config = function()
+				require("nvim-surround").setup({
+					-- Configuration here, or leave empty to use defaults
+				})
+			end,
+		},
 	},
 
 	-- --- Navegación y Búsqueda ---
@@ -69,22 +79,48 @@ require("lazy").setup({
 	},
 
 	{
-		-- --- Autocompletado Moderno (Blink.cmp) ---
 		"saghen/blink.cmp",
 		dependencies = "rafamadriz/friendly-snippets",
 		version = "*",
 		opts = {
-			keymap = { preset = "default" },
+			-- 1. Mapeos más intuitivos
+			keymap = {
+				preset = "none", -- Desactivamos el preset para no tener conflictos
+				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+				["<C-e>"] = { "hide" },
+
+				-- Enter acepta la sugerencia (solo si hay una seleccionada)
+				["<CR>"] = { "accept", "fallback" },
+
+				-- Tab navega y pre-selecciona
+				["<Tab>"] = { "select_next", "fallback" },
+				["<S-Tab>"] = { "select_prev", "fallback" },
+			},
+
+			-- 2. Visualización y Comportamiento
+			completion = {
+				-- Muestra el texto gris antes de aceptarlo (como GitHub Copilot)
+				ghost_text = { enabled = true },
+
+				-- Preselecciona automáticamente el primer resultado
+				list = {
+					selection = { preselect = true, auto_insert = false },
+				},
+
+				-- Ventana de documentación automática
+				documentation = { auto_show = true, auto_show_delay_ms = 200 },
+			},
+
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
 			},
+
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 			},
 		},
 	},
-
 	-- --- Treesitter (Corrección de carga segura) ---
 	{
 		"nvim-treesitter/nvim-treesitter",

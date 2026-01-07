@@ -13,30 +13,51 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1 || { warn "Falta '$1'"; return 1; }
 }
 
+# Backup que además despeja el path para que stow no choque:
+# mueve ~/<ruta> a ~/.dotfiles_backup/<ruta>.YYYYmmddHHMMSS
 backup() {
-  local p="$1"
-  if [[ -e "$HOME/$p" && ! -L "$HOME/$p" ]]; then
+  local rel="$1"
+  local src="$HOME/$rel"
+
+  if [[ -e "$src" && ! -L "$src" ]]; then
+    local ts dest
+    ts="$(date +%Y%m%d%H%M%S)"
+    dest="$HOME/.dotfiles_backup/$rel.$ts"
+
     mkdir -p "$HOME/.dotfiles_backup"
-    cp -a "$HOME/$p" "$HOME/.dotfiles_backup/"
-    log "Backup de ~/$p -> ~/.dotfiles_backup/"
+    mkdir -p "$(dirname "$dest")"
+
+    mv "$src" "$dest"
+    log "Movido backup: ~/$rel -> $dest"
   fi
 }
+
+# Runtime dirs para Neovim (XDG)
 setup_runtime() {
-  mkdir -p "$HOME/.vim"/{swap,undo,backup}
-  chmod 700 "$HOME/.vim"/{swap,undo,backup} 2>/dev/null || true
+  local base="${XDG_STATE_HOME:-$HOME/.local/state}/nvim"
+  mkdir -p "$base"/{swap,undo,backup}
+  chmod 700 "$base"/{swap,undo,backup} 2>/dev/null || true
+  ok "Runtime Neovim: $base/{swap,undo,backup}"
 }
 
-### ===============================
-### paquetes por SO
-### ===============================
 install_macos() {
+  if [[ "$OSTYPE" != "darwin"* ]]; then
+    error "Este script es solo para macOS. OSTYPE=$OSTYPE"
+    exit 1
+  fi
+
   log "Detectado macOS."
+
   if ! need_cmd brew; then
     log "Instalando Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ok "Homebrew instalado."
+
+    # cargar brew en Apple Silicon (y no rompe en Intel)
     if [[ -x /opt/homebrew/bin/brew ]]; then
       eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -x /usr/local/bin/brew ]]; then
+      eval "$(/usr/local/bin/brew shellenv)"
     fi
   fi
 
@@ -48,6 +69,13 @@ install_macos() {
     warn "No se encontró Brewfile.mac. Saltando."
   fi
 
+  # Asegurar Neovim (por si no está en Brewfile)
+  if ! need_cmd nvim; then
+    log "Instalando Neovim..."
+    brew install neovim
+    ok "Neovim instalado."
+  fi
+
   if brew list fzf >/dev/null 2>&1; then
     log "Configurando fzf keybindings/completion..."
     "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc || true
@@ -55,70 +83,40 @@ install_macos() {
   fi
 }
 
-install_arch() {
-  log "Detectado Arch Linux."
-  need_cmd pacman || { error "pacman no disponible. Abortando."; exit 1; }
-
-  log "Actualizando índices y sistema..."
-  sudo pacman -Syu --noconfirm || true
-
-  if [[ -f "$REPO_DIR/packages.arch" ]]; then
-    log "Instalando paquetes oficiales (pacman)..."
-    sudo pacman -S --needed --noconfirm - < "$REPO_DIR/packages.arch" || {
-      warn "Algún paquete de pacman falló. Revisa 'packages.arch'."
-    }
-    ok "Paquetes oficiales instalados."
-  else
-    warn "No se encontró packages.arch. Saltando pacman."
-  fi
-
-  if [[ -f "$REPO_DIR/aur-packages.arch" ]]; then
-    if need_cmd yay; then
-      log "Instalando paquetes AUR (yay)..."
-      yay -S --needed --noconfirm - < "$REPO_DIR/aur-packages.arch" || {
-        warn "Algún paquete AUR falló. Revisa 'aur-packages.arch'."
-      }
-      ok "Paquetes AUR instalados."
-    else
-      warn "No se encontró 'yay'. Para instalarlo:\n  git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si\nLuego vuelve a correr ./install.sh"
-    fi
-  else
-    log "No hay aur-packages.arch. Saltando AUR."
-  fi
-}
-
-install_other_linux() {
-  warn "Distro Linux no-Arch detectada. Este script no instala paquetes automáticamente aquí."
-  warn "Puedes adaptar uno para apt/dnf/pacman según tu sistema."
-}
-
 ### ===============================
 ### stow y symlinks
 ### ===============================
 apply_stow() {
   if ! need_cmd stow; then
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-      brew install stow
-    elif [[ -f /etc/arch-release ]]; then
-      sudo pacman -S --needed --noconfirm stow
-    fi
+    log "Instalando stow..."
+    brew install stow
+    ok "stow instalado."
   fi
 
-  # Backups defensivos
+  # Backups (mueve lo existente para que stow no falle)
   backup ".zshrc"; backup ".zprofile"
-  backup ".zsh_aliases"; backup ".zshfunctions";
-  backup ".vimrc"; backup ".vim"
+  backup ".aliases.zsh"; backup ".functions.zsh"
   backup ".tmux.conf"
   backup ".gitconfig"; backup ".gitignore_global"
 
-  # Aplicar stow por paquetes presentes
+  # Neovim (lo importante)
+  backup ".config/nvim"
+  backup ".local/state/nvim"
+  backup ".local/share/nvim"
+
+  # Vim legacy (por si existía de antes)
+  backup ".vimrc"; backup ".vim"
+
   pushd "$REPO_DIR" >/dev/null
-  for pkg in shell vim tmux git; do
+
+  # Aplica stow para los paquetes presentes
+  for pkg in shell nvim tmux git; do
     if [[ -d "$pkg" ]]; then
       log "stow $pkg -> \$HOME"
       stow -v -R -t "$HOME" "$pkg"
     fi
   done
+
   popd >/dev/null
   ok "Symlinks aplicados con Stow."
 }
@@ -157,16 +155,7 @@ final_tips() {
 }
 
 main() {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    install_macos
-  elif [[ -f /etc/arch-release ]]; then
-    install_arch
-  elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    install_other_linux
-  else
-    warn "SO no reconocido: $OSTYPE"
-  fi
-
+  install_macos
   apply_stow
   setup_git
   setup_runtime
@@ -175,4 +164,3 @@ main() {
 }
 
 main "$@"
-

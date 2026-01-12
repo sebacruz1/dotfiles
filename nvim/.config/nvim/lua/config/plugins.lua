@@ -191,9 +191,8 @@ require("lazy").setup({
 			})
 
 			-- 1. Definir rutas de plugins (Vue support)
-			local vue_plugin_path = vim.fn.expand("$MASON/packages")
-				.. "/vue-language-server/node_modules/@vue/language-server"
-
+			local vue_plugin_path = vim.fn.stdpath("data")
+				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 			-- 2. Definir configuración de servidores
 			local servers = {
 				lua_ls = {

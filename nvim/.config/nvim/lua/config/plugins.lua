@@ -52,16 +52,14 @@ require("lazy").setup({
 			map("n", "<leader>n", "<cmd>NvimTreeToggle<CR>", { silent = true })
 			map("n", "<leader>f", "<cmd>NvimTreeFindFile<CR>", { silent = true })
 		end,
-		{
-			"kylechui/nvim-surround",
-			version = "^3.0.0", -- Use for stability; omit to use `main` branch for the latest features
-			event = "VeryLazy",
-			config = function()
-				require("nvim-surround").setup({
-					-- Configuration here, or leave empty to use defaults
-				})
-			end,
-		},
+	},
+	{
+		"kylechui/nvim-surround",
+		version = "^3.0.0",
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({})
+		end,
 	},
 
 	-- --- Navegación y Búsqueda ---
@@ -83,50 +81,36 @@ require("lazy").setup({
 		dependencies = "rafamadriz/friendly-snippets",
 		version = "*",
 		opts = {
-			-- 1. Mapeos más intuitivos
 			keymap = {
-				preset = "none", -- Desactivamos el preset para no tener conflictos
+				preset = "none",
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 				["<C-e>"] = { "hide" },
-
-				-- Enter acepta la sugerencia (solo si hay una seleccionada)
 				["<CR>"] = { "accept", "fallback" },
-
-				-- Tab navega y pre-selecciona
 				["<Tab>"] = { "select_next", "fallback" },
 				["<S-Tab>"] = { "select_prev", "fallback" },
 			},
-
-			-- 2. Visualización y Comportamiento
 			completion = {
-				-- Muestra el texto gris antes de aceptarlo (como GitHub Copilot)
 				ghost_text = { enabled = true },
-
-				-- Preselecciona automáticamente el primer resultado
 				list = {
 					selection = { preselect = true, auto_insert = false },
 				},
-
-				-- Ventana de documentación automática
 				documentation = { auto_show = true, auto_show_delay_ms = 200 },
 			},
-
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
 			},
-
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 			},
 		},
 	},
-	-- --- Treesitter (Corrección de carga segura) ---
+
+	-- --- Treesitter ---
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
-			-- Intenta cargar el módulo antiguo, si falla, usa el nuevo
 			local status, configs = pcall(require, "nvim-treesitter.configs")
 			if not status then
 				configs = require("nvim-treesitter")
@@ -149,6 +133,7 @@ require("lazy").setup({
 					"php",
 					"blade",
 					"vue",
+					"scss",
 				},
 				highlight = { enable = true },
 				indent = { enable = true },
@@ -165,7 +150,6 @@ require("lazy").setup({
 		end,
 	},
 
-	-- Habilitado para que mason-lspconfig valide nombres correctamente
 	{ "neovim/nvim-lspconfig", enabled = true },
 
 	{
@@ -175,12 +159,14 @@ require("lazy").setup({
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"lua_ls",
-					"ts_ls",
 					"pyright",
 					"intelephense",
 					"vue_ls",
+					"eslint",
+					"hyprls",
+					"vtsls",
 					"emmet_ls",
-					"tailwindcss", -- 'volar' cambiado a 'vue_ls'
+					"tailwindcss",
 				},
 			})
 		end,
@@ -192,6 +178,7 @@ require("lazy").setup({
 		config = function()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
+			-- Autocmd para keymaps globales de LSP
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					local opts = { buffer = args.buf, silent = true }
@@ -203,25 +190,84 @@ require("lazy").setup({
 				end,
 			})
 
-			-- Configuración de servidores con vue_ls
+			-- 1. Definir rutas de plugins (Vue support)
+			local vue_plugin_path = vim.fn.expand("$MASON/packages")
+				.. "/vue-language-server/node_modules/@vue/language-server"
+
+			-- 2. Definir configuración de servidores
 			local servers = {
-				lua_ls = { settings = { Lua = { diagnostics = { globals = { "vim" } } } } },
-				ts_ls = {},
-				pyright = {},
-				vue_ls = {},
-				tailwindcss = {},
-				intelephense = {
+				lua_ls = {
+					on_attach = function(client)
+						client.server_capabilities.documentFormattingProvider = false
+					end,
 					settings = {
-						intelephense = {
-							environment = { phpVersion = "8.2" },
+						Lua = { diagnostics = { globals = { "vim" } }, workspace = { checkThirdParty = false } },
+					},
+				},
+				pyright = {},
+				vue_ls = {
+					init_options = {
+						typescript = {},
+					},
+					on_attach = function(client)
+						client.server_capabilities.semanticTokensProvider.full = true
+					end,
+				},
+				vtsls = {
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+					settings = {
+						vtsls = {
+							tsserver = {
+								globalPlugins = {
+									{
+										name = "@vue/typescript-plugin",
+										location = vue_plugin_path,
+										languages = { "vue" },
+										configNamespace = "typescript",
+									},
+								},
+							},
 						},
 					},
 				},
+				tailwindcss = {
+					settings = {
+						tailwindCSS = {
+							classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+							lint = { cssConflict = "warning", invalidApply = "error" },
+						},
+					},
+				},
+				intelephense = {
+					settings = { intelephense = { environment = { phpVersion = "8.2" } } },
+				},
 				emmet_ls = {
 					filetypes = { "html", "typescriptreact", "javascriptreact", "css", "blade", "vue" },
+					on_attach = function(client, bufnr)
+						vim.keymap.set("i", "<c-s>,", function()
+							client.request(
+								"textDocument/completion",
+								vim.lsp.util.make_position_params(0, client.offset_encoding),
+								function(_, result)
+									if not result or not result.items then
+										return
+									end
+									local textEdit = result.items[1].textEdit
+									local snip_string = textEdit.newText
+									textEdit.newText = ""
+									vim.lsp.util.apply_text_edits({ textEdit }, bufnr, client.offset_encoding)
+									require("luasnip").lsp_expand(snip_string)
+								end,
+								bufnr
+							)
+						end, { buffer = bufnr, desc = "Expand emmet" })
+					end,
 				},
+				hyprls = {},
+				eslint = {},
 			}
 
+			-- 3. Cargar configuraciones en Neovim 0.11
 			for server, config in pairs(servers) do
 				config.capabilities = capabilities
 				vim.lsp.config(server, config)
@@ -230,17 +276,22 @@ require("lazy").setup({
 		end,
 	},
 
-	-- --- Formateo y Herramientas ---
+	-- --- Formateo ---
 	{
 		"stevearc/conform.nvim",
 		config = function()
 			require("conform").setup({
-				format_on_save = { timeout_ms = 2000, lsp_fallback = true },
+				format_on_save = function(bufnr)
+					if vim.bo[bufnr].filetype == "php" then
+						return { timeout_ms = 2000, lsp_fallback = false }
+					end
+					return { timeout_ms = 2000, lsp_fallback = true }
+				end,
 				formatters_by_ft = {
+					php = { "pint" },
+					blade = { "blade-formatter" },
 					javascript = { "prettierd" },
 					typescript = { "prettierd" },
-					javascriptreact = { "prettierd" },
-					typescriptreact = { "prettierd" },
 					vue = { "prettierd" },
 					lua = { "stylua" },
 				},

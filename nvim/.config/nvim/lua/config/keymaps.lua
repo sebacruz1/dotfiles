@@ -34,3 +34,12 @@ end, { desc = "Tmux: Abrir actual a la derecha (RO + Línea)", silent = true })
 vim.keymap.set("n", "<leader>th", function()
 	open_in_tmux_at_line("horizontal")
 end, { desc = "Tmux: Abrir actual abajo (RO + Línea)", silent = true })
+
+-- Pegar desde el portapapeles del sistema (macOS) en modo normal
+vim.keymap.set("n", "<leader>p", '"+p', { desc = "Pegar desde el sistema" })
+
+-- Pegar desde el portapapeles del sistema en modo insertar (como cmd + v)
+vim.keymap.set("i", "<C-v>", "<C-r>+", { desc = "Pegar desde el sistema en insertar" })
+
+-- Copiar explicitamente al sistema (solo cuando tú quieras)
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copiar al sistema" })

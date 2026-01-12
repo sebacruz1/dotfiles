@@ -46,20 +46,12 @@ EOF
 fi
 
 antidote load
-# source ~/.zsh_plugins.zsh
 
-# ------------------------------------------------------------
-# fzf keybindings/completions (macOS + Arch)
-# ------------------------------------------------------------
-# macOS (brew)
 if command -v brew >/dev/null 2>&1; then
   FZF_PREFIX="$HOMEBREW_PREFIX/opt/fzf"
   [[ -r "$FZF_PREFIX/shell/key-bindings.zsh" ]] && source "$FZF_PREFIX/shell/key-bindings.zsh"
   [[ -r "$FZF_PREFIX/shell/completion.zsh"   ]] && source "$FZF_PREFIX/shell/completion.zsh"
 fi
-# Arch Linux
-[[ -r /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
-[[ -r /usr/share/fzf/completion.zsh   ]] && source /usr/share/fzf/completion.zsh
 
 bindkey -v
 bindkey '^I' expand-or-complete

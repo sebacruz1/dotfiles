@@ -45,7 +45,7 @@ opt.backupdir = dirs.backup
 opt.undofile = true -- Importante: habilita el guardado de undo persistente
 
 -- integración y otros
-opt.clipboard = "unnamedplus"
+-- opt.clipboard = "unnamedplus"
 opt.showmode = false
 
 vim.diagnostic.config({

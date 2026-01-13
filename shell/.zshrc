@@ -8,6 +8,9 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
 setopt sharehistory histignoredups histignorespace extendedglob
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
 export EDITOR=nvim
 
 # ------------------------------------------------------------

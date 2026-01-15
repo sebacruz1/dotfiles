@@ -43,3 +43,13 @@ vim.keymap.set("i", "<C-v>", "<C-r>+", { desc = "Pegar desde el sistema en inser
 
 -- Copiar explicitamente al sistema (solo cuando tú quieras)
 vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copiar al sistema" })
+
+-- Ver el mensaje de error completo
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Ver error flotante" })
+
+-- Navegación rápida entre errores
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Ir al error anterior" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Ir al siguiente error" })
+
+-- Lista de todos los diagnósticos del proyecto (Quickfix list)
+vim.keymap.set("n", "<leader>dl", vim.diagnostic.setqflist, { desc = "Lista de errores del proyecto" })

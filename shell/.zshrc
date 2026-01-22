@@ -1,21 +1,24 @@
-# ==== Instant prompt p10k
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # ==== Historial y opciones
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
-setopt sharehistory histignoredups histignorespace extendedglob
-setopt APPEND_HISTORY
-setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
-export EDITOR=nvim
+if [[ -n "$TMUX_PANE" ]]; then
+  export HISTFILE=$HOME/.zsh_history_tmux_${TMUX_PANE:1}
+else
+  export HISTFILE=$HOME/.zsh_history
+fi
 
-# ------------------------------------------------------------
-# SO detection + paths (funciona en macOS y Arch)
-# ------------------------------------------------------------
+# Opciones de historial recomendadas
+unsetopt share_history
+setopt inc_append_history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt hup
+
+export EDITOR=nvim
 
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
@@ -25,30 +28,33 @@ fi
 [[ -d /usr/share/zsh/site-functions ]] && fpath+=("/usr/share/zsh/site-functions")
 
 autoload -Uz compinit
-compinit -i   # usa -i para ignorar compdefs inválidos
+compinit -i
 
-# (Opcional) estilos de completion cómodos
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*'
 zstyle ':completion:*' completer _extensions _complete _approximate
 
-if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
-  git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
-fi
-source ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
 
-# ==== Lista de plugins declarativa (se crea si no existe)
 ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
+ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
+
 if [[ ! -f "$ZPLUGINS" ]]; then
   cat > "$ZPLUGINS" <<'EOF'
-romkatv/powerlevel10k
 zdharma-continuum/fast-syntax-highlighting
-docker/cli           kind:completion
+zsh-users/zsh-autosuggestions
 ohmyzsh/ohmyzsh path:plugins/git
+ohmyzsh/ohmyzsh path:plugins/composer
+ohmyzsh/ohmyzsh path:plugins/laravel
+ohmyzsh/ohmyzsh path:plugins/npm
+ohmyzsh/ohmyzsh path:plugins/tmux
 EOF
 fi
 
-antidote load
+if [[ ! -f "$ZSTATIC" || "$ZPLUGINS" -nt "$ZSTATIC" ]]; then
+  antidote bundle < "$ZPLUGINS" > "$ZSTATIC"
+fi
+source "$ZSTATIC"
 
 if command -v brew >/dev/null 2>&1; then
   FZF_PREFIX="$HOMEBREW_PREFIX/opt/fzf"
@@ -65,10 +71,11 @@ zle -N bracketed-paste bracketed-paste-magic
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
+
 export PATH="/usr/local/mysql/bin:$PATH"
-# ==== p10k config
-[[ -r ~/.p10k.zsh ]] && source ~/.p10k.zsh
-
-
-# Composer PHP
 export PATH=$PATH:$HOME/.config/composer/vendor/bin
+
+# ==== Inicialización de Starship
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi

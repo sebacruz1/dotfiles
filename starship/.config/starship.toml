@@ -1,0 +1,43 @@
+# No agregar una línea en blanco al inicio para ahorrar espacio
+add_newline = false
+
+# Formato de una sola línea: Directorio > Git > Lenguajes > Símbolo
+format = "$directory$git_branch$git_status$character"
+
+[directory]
+style = "bold cyan"
+truncate_to_repo = true
+truncation_symbol = "../"
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = ""
+style = "bold purple"
+
+[git_status]
+# Estilo base para el grupo de estados
+style = "bold red"
+# Agrupamos todos los signos sin palabras adicionales
+format = "([$all_status$ahead_behind]($style) )"
+
+# Definición de signos y contadores por color
+conflicted = "[=${count}](bright-red) "
+ahead = "[^${count}](bright-green) "
+behind = "[v${count}](bright-red) "
+diverged = "[<>${count}](bright-yellow) "
+untracked = "[?${count}](bright-cyan) "
+stashed = "[$${count}](bright-blue) "
+modified = "[!${count}](bright-yellow) "
+staged = "[+${count}](bright-green) "
+renamed = "[r${count}](bright-blue) "
+deleted = "[x${count}](bright-red) "
+[character]
+# Símbolos simples para los modos de Zsh
+success_symbol = "[>](bold green)"
+error_symbol = "[x](bold red)"
+vicmd_symbol = "[<](bold yellow)"
+
+[cmd_duration]
+min_time = 500
+style = "yellow"
+format = "t:[$duration]($style) "

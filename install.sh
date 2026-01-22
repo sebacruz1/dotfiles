@@ -13,8 +13,6 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1 || { warn "Falta '$1'"; return 1; }
 }
 
-# Backup que además despeja el path para que stow no choque:
-# mueve ~/<ruta> a ~/.dotfiles_backup/<ruta>.YYYYmmddHHMMSS
 backup() {
   local rel="$1"
   local src="$HOME/$rel"
@@ -32,7 +30,6 @@ backup() {
   fi
 }
 
-# Runtime dirs para Neovim (XDG)
 setup_runtime() {
   local base="${XDG_STATE_HOME:-$HOME/.local/state}/nvim"
   mkdir -p "$base"/{swap,undo,backup}
@@ -69,7 +66,6 @@ install_macos() {
     warn "No se encontró Brewfile.mac. Saltando."
   fi
 
-  # Asegurar Neovim (por si no está en Brewfile)
   if ! need_cmd nvim; then
     log "Instalando Neovim..."
     brew install neovim
@@ -83,9 +79,7 @@ install_macos() {
   fi
 }
 
-### ===============================
-### stow y symlinks
-### ===============================
+## ===============================
 apply_stow() {
   if ! need_cmd stow; then
     log "Instalando stow..."
@@ -93,24 +87,27 @@ apply_stow() {
     ok "stow instalado."
   fi
 
-  # Backups (mueve lo existente para que stow no falle)
   backup ".zshrc"; backup ".zprofile"
   backup ".aliases.zsh"; backup ".functions.zsh"
   backup ".tmux.conf"
   backup ".gitconfig"; backup ".gitignore_global"
 
-  # Neovim (lo importante)
+  # --- NUEVOS BACKUPS ---
+  backup ".config/starship.toml"
+  backup ".wezterm.lua"
+
+  # Neovim
   backup ".config/nvim"
   backup ".local/state/nvim"
   backup ".local/share/nvim"
 
-  # Vim legacy (por si existía de antes)
+  # Vim legacy
   backup ".vimrc"; backup ".vim"
 
   pushd "$REPO_DIR" >/dev/null
 
-  # Aplica stow para los paquetes presentes
-  for pkg in shell nvim tmux git; do
+  # --- ACTUALIZADO: Añadidos starship y wezterm ---
+  for pkg in shell nvim tmux git starship wezterm; do
     if [[ -d "$pkg" ]]; then
       log "stow $pkg -> \$HOME"
       stow -v -R -t "$HOME" "$pkg"
@@ -120,7 +117,6 @@ apply_stow() {
   popd >/dev/null
   ok "Symlinks aplicados con Stow."
 }
-
 ### ===============================
 ### git global config
 ### ===============================

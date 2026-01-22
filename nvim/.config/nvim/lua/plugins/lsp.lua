@@ -5,6 +5,22 @@ return {
 			require("mason").setup()
 		end,
 	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		dependencies = { "williamboman/mason.nvim" },
+		config = function()
+			require("mason-tool-installer").setup({
+				ensure_installed = {
+					"pint",
+					"blade-formatter",
+					"prettierd",
+					"prettier",
+					"stylua",
+					"eslint_d", -- Opcional, pero recomendado para linting rápido
+				},
+			})
+		end,
+	},
 
 	{ "neovim/nvim-lspconfig", enabled = true },
 
@@ -46,7 +62,6 @@ return {
 				end,
 			})
 
-			-- 1. Definir rutas de plugins (Vue support)
 			local vue_plugin_path = vim.fn.stdpath("data")
 				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 

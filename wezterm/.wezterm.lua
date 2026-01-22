@@ -27,5 +27,9 @@ config.window_close_confirmation = "NeverPrompt"
 config.max_fps = 144
 config.animation_fps = 60
 config.cursor_blink_rate = 250
+config.window_frame = {
+	font_size = 11.0,
+	active_titlebar_bg = "#1f1f28", -- sumiInk3 de tu Kanagawa Wave
+}
 
 return config

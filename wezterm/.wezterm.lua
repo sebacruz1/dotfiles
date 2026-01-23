@@ -11,10 +11,10 @@ config.line_height = 1.1
 config.window_decorations = "RESIZE" -- Elimina la barra de titulo para un look minimalista
 config.macos_window_background_blur = 40
 config.window_padding = {
-	left = 10,
-	right = 10,
-	top = 10,
-	bottom = 10,
+	left = 2,
+	right = 2,
+	top = 5,
+	bottom = 2,
 }
 config.scrollback_lines = 5000
 config.native_macos_fullscreen_mode = true

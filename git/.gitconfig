@@ -4,9 +4,9 @@
     email = sebastiancruzpomar@gmail.com
 
 [core]
-    editor = vim
+    editor = neovim
     autocrlf = input
-	excludesfile = /Users/seba/.gitignore_global
+    excludesfile = /Users/seba/.gitignore_global
     filemode = false
 
 [color]

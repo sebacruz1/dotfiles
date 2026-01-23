@@ -65,7 +65,6 @@ return {
 			local vue_plugin_path = vim.fn.stdpath("data")
 				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
-			-- 2. Definir configuración de servidores
 			local servers = {
 				lua_ls = {
 					on_attach = function(client)
@@ -136,7 +135,6 @@ return {
 				eslint = {},
 			}
 
-			-- 3. Cargar configuraciones en Neovim 0.11
 			for server, config in pairs(servers) do
 				config.capabilities = capabilities
 				vim.lsp.config(server, config)

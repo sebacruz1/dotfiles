@@ -27,11 +27,11 @@ local function open_in_tmux_at_line(direction)
 end
 
 -- Atajos de teclado
-vim.keymap.set("n", "<leader>tv", function()
+vim.keymap.set("n", "<leader>v", function()
 	open_in_tmux_at_line("vertical")
 end, { desc = "Tmux: Abrir actual a la derecha (RO + Línea)", silent = true })
 
-vim.keymap.set("n", "<leader>th", function()
+vim.keymap.set("n", "<leader>h", function()
 	open_in_tmux_at_line("horizontal")
 end, { desc = "Tmux: Abrir actual abajo (RO + Línea)", silent = true })
 

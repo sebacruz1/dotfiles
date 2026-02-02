@@ -21,18 +21,19 @@ style = "bold purple"
 
 [git_status]
 style = "bold red"
-format = "([$all_status$ahead_behind]($style))"
+format = "([$ahead_behind$staged$modified]($style)) "
 
-conflicted = "[=${count}](bright-red) "
 ahead = "[^${count}](bright-green) "
 behind = "[v${count}](bright-red) "
-diverged = "[<>${count}](bright-yellow) "
-untracked = "[?${count}](bright-cyan) "
-stashed = "[$${count}](bright-blue) "
-modified = "[!${count}](bright-yellow) "
+
+stashed = "* ${count}"
 staged = "[+${count}](bright-green) "
-renamed = "[r${count}](bright-blue) "
-deleted = "[x${count}](bright-red) "
+modified = "[!${count}](bright-yellow) "
+
+untracked = ""
+conflicted = ""
+renamed = ""
+deleted = ""
 
 [character]
 success_symbol = "[>](bold green)"

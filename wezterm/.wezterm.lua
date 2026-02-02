@@ -5,10 +5,19 @@ local config = wezterm.config_builder()
 config.window_background_opacity = 0.8
 config.color_scheme = "Kanagawa (Gogh)"
 config.font = wezterm.font("JetBrainsMono Nerd Font")
+
+config.harfbuzz_features = { "zero" }
 config.font_size = 13
 config.line_height = 1.1
 
-config.window_decorations = "RESIZE" -- Elimina la barra de titulo para un look minimalista
+config.harfbuzz_features = {
+	"calt=0",
+	"clig=0",
+	"liga=0",
+	"zero",
+}
+
+config.window_decorations = "RESIZE"
 config.macos_window_background_blur = 40
 config.window_padding = {
 	left = 2,

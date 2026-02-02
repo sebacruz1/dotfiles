@@ -63,6 +63,7 @@ ohmyzsh/ohmyzsh path:plugins/docker
 ohmyzsh/ohmyzsh path:plugins/docker-compose
 paulirish/git-open
 Aloxaf/fzf-tab
+MichaelAquilina/zsh-you-should-use
 zdharma-continuum/fast-syntax-highlighting
 EOF
 fi

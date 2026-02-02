@@ -4,7 +4,7 @@
     email = sebastiancruzpomar@gmail.com
 
 [core]
-    editor = neovim
+    editor = nvim
     autocrlf = input
     excludesfile = /Users/seba/.gitignore_global
     filemode = false
@@ -30,10 +30,13 @@
     ls = ls-files
 
 [diff]
-    tool = vimdiff
+    tool = nvimdiff
+
+[difftool "nvimdiff"]
+    path = nvim
 
 [merge]
-    tool = vimdiff
+    tool = nvim
 
 [push]
     default = simple

@@ -9,9 +9,11 @@ cs() {
 }
 alias python='python3'; alias pip='pip3'
 alias vim='nvim'
+alias vi='nvim'
 
 # ==== Laravel / PHP
 alias pa="php artisan"
+alias artisan='docker compose exec app php artisan'
 alias mfs="php artisan migrate:fresh --seed"
 alias log="tail -f storage/logs/laravel.log"
 alias cpy="composer install && npm install"

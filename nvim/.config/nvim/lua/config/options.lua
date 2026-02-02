@@ -11,6 +11,7 @@ opt.splitbelow = true
 opt.updatetime = 200
 opt.timeoutlen = 400
 opt.scrolloff = 8
+vim.opt.conceallevel = 0
 vim.opt.cmdheight = 0
 
 -- búsqueda

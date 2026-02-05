@@ -22,13 +22,4 @@ return {
 			require("Comment").setup()
 		end,
 	},
-
-	{
-		"gbprod/yanky.nvim",
-		config = function()
-			require("yanky").setup({})
-			vim.keymap.set({ "n", "x" }, "<leader>y", "<Plug>(YankyPreviousEntry)")
-			vim.keymap.set({ "n", "x" }, "<leader>Y", "<Plug>(YankyNextEntry)")
-		end,
-	},
 }

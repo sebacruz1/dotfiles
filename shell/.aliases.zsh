@@ -4,9 +4,6 @@ alias ..='cd ..'; alias ...='cd ../..'; alias ....='cd ../../..'
 alias ll='eza -l --git --icons';
 alias ls='eza -la --git --icons'
 unalias cs 2>/dev/null
-cs() {
-  cd "$1" && ls
-}
 alias python='python3'; alias pip='pip3'
 alias vim='nvim'
 alias vi='nvim'
@@ -18,17 +15,8 @@ alias mfs="php artisan migrate:fresh --seed"
 alias log="tail -f storage/logs/laravel.log"
 alias cpy="composer install && npm install"
 
-alias nd="npm run dev"
-alias nb="npm run build"
-alias nclean="rm -rf node_modules package-lock.json && npm install"
-
-alias gst="git status"
-alias gco="git checkout"
-alias gcb="git checkout -b"
-alias gp="git push"
-alias gl="git pull"
-alias gaa="git add ."
 alias gcm="git commit -m"
+alias gaa="git add ."
 
 alias ff='fd --max-depth 1 --type f --hidden --exclude .git'
 alias fv='fd --type f --hidden --exclude .git | fzf | xargs -r nvim'

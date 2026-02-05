@@ -29,3 +29,16 @@ vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave" }, {
 		end
 	end,
 })
+
+vim.api.nvim_set_hl(0, "YankFlash", { bg = "#fffff0", fg = "#000000" })
+-- Resaltar texto al copiar (Highlight on Yank)
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Resaltar el texto copiado (yank)",
+	group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank({
+			higroup = "YankFlash", -- El color del destello (puedes probar "Visual" o "CurSearch")
+			timeout = 200, -- Cuánto dura el destello en milisegundos (200ms es suave)
+		})
+	end,
+})

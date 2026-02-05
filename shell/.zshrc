@@ -2,23 +2,17 @@
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
-if [[ -n "$TMUX_PANE" ]]; then
-  export HISTFILE=$HOME/.zsh_history_tmux_${TMUX_PANE:1}
-else
-  export HISTFILE=$HOME/.zsh_history
-fi
 
-unsetopt share_history
-setopt inc_append_history
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt hist_verify
+# setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
 setopt hup
 
 export EDITOR=nvim
-
+#
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
   [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
@@ -63,7 +57,6 @@ ohmyzsh/ohmyzsh path:plugins/docker
 ohmyzsh/ohmyzsh path:plugins/docker-compose
 paulirish/git-open
 Aloxaf/fzf-tab
-MichaelAquilina/zsh-you-should-use
 zdharma-continuum/fast-syntax-highlighting
 EOF
 fi

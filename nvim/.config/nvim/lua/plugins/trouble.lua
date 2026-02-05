@@ -3,6 +3,7 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	cmd = "Trouble",
 	opts = {
+		focus = true,
 		modes = {
 			diagnostics = {
 				groups = {

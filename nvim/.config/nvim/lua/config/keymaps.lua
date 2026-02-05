@@ -4,12 +4,12 @@ local map = vim.keymap.set
 -- básicos
 map("n", "<leader>w", "<cmd>w<CR>", { silent = true })
 map("n", "<leader>q", "<cmd>q<CR>", { silent = true })
-map("n", "<leader>h", "<cmd>nohlsearch<CR>", { silent = true })
+map("n", "<Esc>", "<cmd>nohlsearch<CR>", { silent = true })
 
-map("n", "<C-h>", "<C-w>h", { silent = true })
-map("n", "<C-j>", "<C-w>j", { silent = true })
-map("n", "<C-k>", "<C-w>k", { silent = true })
-map("n", "<C-l>", "<C-w>l", { silent = true })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Ir a la ventana izquierda" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Ir a la ventana inferior" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Ir a la ventana superior" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Ir a la ventana derecha" })
 
 map("n", "<leader>co", "<cmd>copen<CR>", { silent = true })
 map("n", "<leader>cc", "<cmd>cclose<CR>", { silent = true })
@@ -53,3 +53,5 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Ir al siguiente er
 
 -- Lista de todos los diagnósticos del proyecto (Quickfix list)
 vim.keymap.set("n", "<leader>dl", vim.diagnostic.setqflist, { desc = "Lista de errores del proyecto" })
+
+vim.keymap.set("n", "<C-z>", "<Nop>", { desc = "Desactivar suspender" })

@@ -8,9 +8,21 @@ mkcd() {
   mkdir "$1" && cd "$1"
 }
 
+zshexit() {
+    local nvim_pid=$(pgrep -P $$ nvim)
 
-if [ -n "$TMUX" ]; then
-    mkdir -p ~/.zsh_history_tmux
-    TMUX_ID=$(tmux display-message -p '#S_#W_#P')
-    HISTFILE="$HOME/.zsh_history_tmux/history_$TMUX_ID"
-fi
+    if [[ -n "$nvim_pid" ]]; then
+        kill -TERM "$nvim_pid"
+
+    fi
+}
+
+# 2. Definimos el envoltorio para fcd
+fcd-widget() {
+  fcd               # Ejecuta el cambio de directorio
+  zle reset-prompt  # Actualiza Starship para mostrar la nueva ruta
+}
+
+zle -N fcd-widget
+
+bindkey '^Y' fcd-widget

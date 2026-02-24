@@ -6,12 +6,15 @@ SAVEHIST=200000
 # setopt SHARE_HISTORY
 setopt APPEND_HISTORY
 setopt INC_APPEND_HISTORY
-setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 setopt hup
 
 export EDITOR=nvim
+export VISUAL=nvim
+export MANPAGER="nvim +Man!"
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+export FZF_DEFAULT_OPTS='--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca --height 40% --layout=reverse'
 #
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
@@ -52,10 +55,10 @@ ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/composer
 ohmyzsh/ohmyzsh path:plugins/laravel
 ohmyzsh/ohmyzsh path:plugins/npm
-ohmyzsh/ohmyzsh path:plugins/tmux
 ohmyzsh/ohmyzsh path:plugins/docker
 ohmyzsh/ohmyzsh path:plugins/docker-compose
 paulirish/git-open
+fdellwing/zsh-bat
 Aloxaf/fzf-tab
 zdharma-continuum/fast-syntax-highlighting
 EOF
@@ -66,11 +69,12 @@ if [[ ! -f "$ZSTATIC" || "$ZPLUGINS" -nt "$ZSTATIC" ]]; then
 fi
 source "$ZSTATIC"
 
-bindkey -v
+bindkey -e
 
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
+eval "$(zoxide init zsh)"
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"

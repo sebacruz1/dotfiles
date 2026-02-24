@@ -22,4 +22,16 @@ return {
 			require("Comment").setup()
 		end,
 	},
+	{
+		"itsfrank/swell.nvim",
+		keys = {
+			{ "<leader>m", "<cmd>SwellToggle<CR>", desc = "Toggle Swell" },
+		},
+	},
+
+	{
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {},
+	},
 }

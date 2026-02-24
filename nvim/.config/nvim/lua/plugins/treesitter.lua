@@ -3,12 +3,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		config = function()
-			local status, configs = pcall(require, "nvim-treesitter.configs")
-			if not status then
-				configs = require("nvim-treesitter")
-			end
-
-			configs.setup({
+			require("nvim-treesitter").setup({
 				ensure_installed = {
 					"lua",
 					"vim",
@@ -23,7 +18,6 @@ return {
 					"bash",
 					"markdown",
 					"php",
-					"blade",
 					"vue",
 					"scss",
 				},

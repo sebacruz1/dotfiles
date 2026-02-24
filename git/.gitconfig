@@ -6,7 +6,7 @@
 [core]
     editor = nvim
     autocrlf = input
-    excludesfile = /Users/seba/.gitignore_global
+	excludesfile = /Users/seba/.gitignore_global
     filemode = false
 
 [color]
@@ -33,13 +33,14 @@
     tool = nvimdiff
 
 [difftool "nvimdiff"]
-    path = nvim
+    path = nvimdiff
 
 [merge]
-    tool = nvim
+    tool = nvimdiff
 
 [push]
     default = simple
+	autoSetupRemote = true
 
 [pager]
   diff = diff-so-fancy | less --tabs=4 -RFX

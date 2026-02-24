@@ -19,19 +19,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	command = [[match ErrorMsg /\s\+$/]],
 })
 
--- Guardar todos los buffers cuando se pierde el foco
-vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave" }, {
-	pattern = "*",
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 	callback = function()
-		-- Verifica que el buffer tenga un nombre y haya sido modificado
-		if vim.bo.modified and vim.fn.expand("%") ~= "" then
-			vim.cmd("silent! wa")
+		if vim.bo.modified and not vim.bo.readonly and vim.fn.expand("%") ~= "" and vim.bo.buftype == "" then
+			vim.cmd("silent! update")
 		end
 	end,
 })
 
 vim.api.nvim_set_hl(0, "YankFlash", { bg = "#fffff0", fg = "#000000" })
--- Resaltar texto al copiar (Highlight on Yank)
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Resaltar el texto copiado (yank)",
 	group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),

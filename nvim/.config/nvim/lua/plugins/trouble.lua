@@ -19,19 +19,9 @@ return {
 	},
 	keys = {
 		{
-			"<leader>xx",
-			"<cmd>Trouble diagnostics toggle<cr>",
-			desc = "Diagnósticos del Proyecto (Trouble)",
-		},
-		{
-			"<leader>xb",
+			"<leader>dd",
 			"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
 			desc = "Diagnósticos del Buffer (Trouble)",
-		},
-		{
-			"<leader>xq",
-			"<cmd>Trouble qflist toggle<cr>",
-			desc = "Quickfix List (Trouble)",
 		},
 	},
 }

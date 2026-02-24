@@ -45,12 +45,17 @@ install_macos() {
 
   log "Detectado macOS."
 
+  # Asegurar que sea Apple Silicon (arm64)
+  if [[ "$(uname -m)" != "arm64" ]]; then
+    error "Este instalador solo soporta macOS Apple Silicon (arm64)."
+    exit 1
+  fi
+
   if ! need_cmd brew; then
     log "Instalando Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ok "Homebrew instalado."
 
-    # cargar brew en Apple Silicon (y no rompe en Intel)
     if [[ -x /opt/homebrew/bin/brew ]]; then
       eval "$(/opt/homebrew/bin/brew shellenv)"
     elif [[ -x /usr/local/bin/brew ]]; then
@@ -79,7 +84,6 @@ install_macos() {
   fi
 }
 
-## ===============================
 apply_stow() {
   if ! need_cmd stow; then
     log "Instalando stow..."
@@ -92,21 +96,17 @@ apply_stow() {
   backup ".tmux.conf"
   backup ".gitconfig"; backup ".gitignore_global"
 
-  # --- NUEVOS BACKUPS ---
   backup ".config/starship.toml"
   backup ".wezterm.lua"
 
-  # Neovim
   backup ".config/nvim"
   backup ".local/state/nvim"
   backup ".local/share/nvim"
 
-  # Vim legacy
   backup ".vimrc"; backup ".vim"
 
   pushd "$REPO_DIR" >/dev/null
 
-  # --- ACTUALIZADO: Añadidos starship y wezterm ---
   for pkg in shell nvim tmux git starship wezterm; do
     if [[ -d "$pkg" ]]; then
       log "stow $pkg -> \$HOME"
@@ -116,10 +116,20 @@ apply_stow() {
 
   popd >/dev/null
   ok "Symlinks aplicados con Stow."
+
+  # Fallback symlinks for wezterm and starship if stow didn't create them
+  if [[ -f "$REPO_DIR/wezterm/.wezterm.lua" ]]; then
+    mkdir -p "$HOME"
+    ln -sfn "$REPO_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
+    log "Symlinked ~/.wezterm.lua -> $REPO_DIR/wezterm/.wezterm.lua"
+  fi
+
+  if [[ -f "$REPO_DIR/starship/starship.toml" ]]; then
+    mkdir -p "$HOME/.config"
+    ln -sfn "$REPO_DIR/starship/starship.toml" "$HOME/.config/starship.toml"
+    log "Symlinked ~/.config/starship.toml -> $REPO_DIR/starship/starship.toml"
+  fi
 }
-### ===============================
-### git global config
-### ===============================
 setup_git() {
   if [[ -L "$HOME/.gitignore_global" || -f "$HOME/.gitignore_global" ]]; then
     log "Configurando Git para usar ~/.gitignore_global..."
@@ -130,9 +140,6 @@ setup_git() {
   fi
 }
 
-### ===============================
-### extras (TPM, mensajes)
-### ===============================
 ensure_tpm() {
   if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
     log "Instalando tmux plugin manager (TPM)..."
@@ -143,11 +150,7 @@ ensure_tpm() {
 
 final_tips() {
   echo
-  ok "Instalación base completada."
-  echo -e "${BLUE}Siguientes pasos recomendados:${NC}"
-  echo "  - Abre una nueva shell para que se apliquen los cambios."
-  echo "  - En tmux: presiona 'prefix + I' para instalar plugins (TPM)."
-  echo "  - En Neovim: corre ':Lazy sync' para sincronizar los plugins."
+  echo -e "${BLUE}Instalación completada${NC}"
 }
 
 main() {

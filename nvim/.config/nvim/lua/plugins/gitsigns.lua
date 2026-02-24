@@ -4,7 +4,6 @@ return {
 	opts = {
 		current_line_blame = true,
 
-		-- Configuración visual
 		current_line_blame_opts = {
 			virt_text = true,
 			virt_text_pos = "eol",
@@ -13,7 +12,6 @@ return {
 		current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
 	},
 	keys = {
-		{ "<leader>hh", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Toggle Git Blame" },
-		{ "<leader>hH", "<cmd>Gitsigns blame_line<cr>", desc = "Ver Blame completo de la línea" },
+		{ "<leader>HH", "<cmd>Gitsigns toggle_current_line_blame<cr>", desc = "Toggle Git Blame" },
 	},
 }

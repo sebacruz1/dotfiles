@@ -11,6 +11,7 @@ opt.splitbelow = true
 opt.timeoutlen = 400
 opt.scrolloff = 8
 opt.cmdheight = 0
+opt.laststatus = 3
 opt.showmode = false
 opt.wrap = false
 

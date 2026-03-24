@@ -1,5 +1,4 @@
 # Aliases
-
 alias ..='cd ..'; alias ...='cd ../..'; alias ....='cd ../../..'
 alias ll='eza -l --git --icons';
 alias ls='eza -la --git --icons'

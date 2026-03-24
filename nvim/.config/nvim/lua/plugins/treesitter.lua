@@ -18,7 +18,6 @@ return {
 					"bash",
 					"markdown",
 					"php",
-					"vue",
 					"scss",
 				},
 				highlight = { enable = true },

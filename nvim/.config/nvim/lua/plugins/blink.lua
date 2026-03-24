@@ -13,6 +13,11 @@ return {
 				["<S-Tab>"] = { "select_prev", "fallback" },
 			},
 			completion = {
+				accept = {
+					auto_brackets = {
+						enabled = true,
+					},
+				},
 				ghost_text = { enabled = true },
 				list = {
 					selection = { preselect = true, auto_insert = false },

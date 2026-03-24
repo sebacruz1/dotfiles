@@ -5,7 +5,7 @@ config.window_background_opacity = 0.8
 config.color_scheme = "Kanagawa (Gogh)"
 config.font = wezterm.font("JetBrainsMono Nerd Font")
 
-config.font_size = 13
+config.font_size = 14
 config.line_height = 1.1
 
 config.harfbuzz_features = {

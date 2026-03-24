@@ -25,6 +25,8 @@ return {
 						"%.fseventsd",
 						"%.AppleDouble",
 						"%.LSOverride",
+						"vendor/",
+						"storage/",
 						"Icon\r",
 						"%._.*",
 					},

@@ -17,10 +17,9 @@ zshexit() {
     fi
 }
 
-# 2. Definimos el envoltorio para fcd
 fcd-widget() {
-  fcd               # Ejecuta el cambio de directorio
-  zle reset-prompt  # Actualiza Starship para mostrar la nueva ruta
+  fcd
+  zle reset-prompt
 }
 
 zle -N fcd-widget

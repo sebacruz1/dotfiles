@@ -32,7 +32,6 @@ return {
 					"lua_ls",
 					"pyright",
 					"intelephense",
-					"vue_ls",
 					"eslint",
 					"hyprls",
 					"vtsls",
@@ -61,9 +60,6 @@ return {
 				end,
 			})
 
-			local vue_plugin_path = vim.fn.stdpath("data")
-				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
-
 			local servers = {
 				lua_ls = {
 					on_attach = function(client)
@@ -74,31 +70,11 @@ return {
 					},
 				},
 				pyright = {},
-				vue_ls = {
-					init_options = {
-						typescript = {},
-					},
-					on_attach = function(client)
-						local provider = client.server_capabilities.semanticTokensProvider
-						if provider then
-							provider.full = true
-						end
-					end,
-				},
 				vtsls = {
-					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 					settings = {
 						vtsls = {
-							tsserver = {
-								globalPlugins = {
-									{
-										name = "@vue/typescript-plugin",
-										location = vue_plugin_path,
-										languages = { "vue" },
-										configNamespace = "typescript",
-									},
-								},
-							},
+							tsserver = {},
 						},
 					},
 				},

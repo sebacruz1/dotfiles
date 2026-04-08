@@ -20,7 +20,15 @@ return {
 				},
 				ghost_text = { enabled = true },
 				list = {
-					selection = { preselect = true, auto_insert = false },
+					selection = {
+						preselect = true,
+						auto_insert = false,
+					},
+				},
+				menu = {
+					auto_show = function(ctx)
+						return ctx.mode ~= "cmdline"
+					end,
 				},
 				documentation = { auto_show = true, auto_show_delay_ms = 200 },
 			},
@@ -30,6 +38,12 @@ return {
 			},
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
+				providers = {
+					snippets = {
+						min_keyword_length = 2,
+						score_offset = -3,
+					},
+				},
 			},
 		},
 	},

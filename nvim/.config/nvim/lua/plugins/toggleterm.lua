@@ -46,7 +46,7 @@ return {
 		})
 	end,
 	keys = {
-		{ "<M-t>", "<cmd>1ToggleTerm direction=float<CR>", mode = { "n", "t" }, desc = "Terminal Flotante" },
+		{ "<C-t>", "<cmd>1ToggleTerm direction=float<CR>", mode = { "n", "t" }, desc = "Terminal Flotante" },
 		{
 			"<leader>hh",
 			"<cmd>2ToggleTerm direction=horizontal<CR>",

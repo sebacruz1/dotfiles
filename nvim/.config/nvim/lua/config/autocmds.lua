@@ -44,3 +44,11 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
 	command = "if mode() != 'c' | checktime | endif",
 	pattern = "*",
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact", "json", "html", "css", "scss" },
+	callback = function()
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.tabstop = 2
+	end,
+})

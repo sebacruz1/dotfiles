@@ -15,6 +15,10 @@ return {
 					javascriptreact = { "prettierd", "eslint_d" },
 					typescript = { "prettierd", "eslint_d" },
 					typescriptreact = { "prettierd", "eslint_d" },
+					json = { "prettierd" },
+					css = { "prettierd" },
+					scss = { "prettierd" },
+					markdown = { "prettierd" },
 					lua = { "stylua" },
 				},
 			})

@@ -29,14 +29,15 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"lua_ls",
-					"pyright",
-					"intelephense",
+					"emmet_ls",
 					"eslint",
 					"hyprls",
-					"vtsls",
-					"emmet_ls",
+					"intelephense",
+					"jdtls",
+					"lua_ls",
+					"pyright",
 					"tailwindcss",
+					"vtsls",
 				},
 			})
 		end,
@@ -51,46 +52,36 @@ return {
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
 					local opts = { buffer = args.buf, silent = true }
+					
+					-- Keymaps generales
 					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+					
+					-- Comandos específicos para vtsls
+					if client and client.name == "vtsls" then
+						vim.keymap.set("n", "gD", vim.lsp.buf.type_definition, opts)
+						vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+						vim.keymap.set("n", "<leader>oi", function()
+							vim.lsp.buf.code_action({
+								apply = true,
+								context = {
+									only = { "source.organizeImports" },
+									diagnostics = {},
+								},
+							})
+						end, { buffer = args.buf, desc = "Organize Imports (No remove)" })
+					end
 				end,
 			})
 
 			local servers = {
-				lua_ls = {
-					on_attach = function(client)
-						client.server_capabilities.documentFormattingProvider = false
-					end,
-					settings = {
-						Lua = { diagnostics = { globals = { "vim" } }, workspace = { checkThirdParty = false } },
-					},
-				},
-				pyright = {},
-				vtsls = {
-					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-					settings = {
-						vtsls = {
-							tsserver = {},
-						},
-					},
-				},
-				tailwindcss = {
-					settings = {
-						tailwindCSS = {
-							classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
-							lint = { cssConflict = "warning", invalidApply = "error" },
-						},
-					},
-				},
-				intelephense = {
-					settings = { intelephense = { environment = { phpVersion = "8.2" } } },
-				},
 				emmet_ls = {
-					filetypes = { "html", "typescriptreact", "javascriptreact", "css"},
+					filetypes = { "html", "typescriptreact", "javascriptreact", "css", "scss" },
 					on_attach = function(client, bufnr)
 						vim.keymap.set("i", "<c-s>,", function()
 							client.request(
@@ -112,8 +103,106 @@ return {
 						end, { buffer = bufnr, desc = "Expand emmet" })
 					end,
 				},
+				eslint = {
+					settings = {
+						workingDirectories = { mode = "auto" },
+						format = false, -- Desactivar formato de eslint, usar prettier
+					},
+					on_attach = function(client, bufnr)
+						-- Mostrar warnings de imports no usados pero no auto-fix
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							callback = function()
+								-- Solo organizar imports, NO remover
+								vim.lsp.buf.code_action({
+									apply = true,
+									context = {
+										only = { "source.organizeImports" },
+										diagnostics = {},
+									},
+								})
+							end,
+						})
+					end,
+				},
 				hyprls = {},
-				eslint = {},
+				intelephense = {
+					settings = { intelephense = { environment = { phpVersion = "8.2" } } },
+				},
+				jdtls = {},
+				lua_ls = {
+					on_attach = function(client)
+						client.server_capabilities.documentFormattingProvider = false
+					end,
+					settings = {
+						Lua = { diagnostics = { globals = { "vim" } }, workspace = { checkThirdParty = false } },
+					},
+				},
+				pyright = {},
+				tailwindcss = {
+					settings = {
+						tailwindCSS = {
+							classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+							lint = { cssConflict = "warning", invalidApply = "error" },
+						},
+					},
+				},
+				vtsls = {
+					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+					settings = {
+						typescript = {
+							inlayHints = {
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								variableTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								enumMemberValues = { enabled = true },
+							},
+							suggest = {
+								completeFunctionCalls = true,
+							},
+							preferences = {
+								importModuleSpecifier = "relative",
+								jsxAttributeCompletionStyle = "auto",
+							},
+							format = {
+								organizeImportsIgnoreCase = false,
+								organizeImportsCollation = "ordinal",
+								organizeImportsNumericCollation = true,
+							},
+						},
+						javascript = {
+							inlayHints = {
+								parameterNames = { enabled = "literals" },
+								parameterTypes = { enabled = true },
+								variableTypes = { enabled = true },
+								propertyDeclarationTypes = { enabled = true },
+								functionLikeReturnTypes = { enabled = true },
+								enumMemberValues = { enabled = true },
+							},
+							suggest = {
+								completeFunctionCalls = true,
+							},
+							preferences = {
+								importModuleSpecifier = "relative",
+								jsxAttributeCompletionStyle = "auto",
+							},
+							format = {
+								organizeImportsIgnoreCase = false,
+								organizeImportsCollation = "ordinal",
+								organizeImportsNumericCollation = true,
+							},
+						},
+						vtsls = {
+							experimental = {
+								completion = {
+									enableServerSideFuzzyMatch = true,
+								},
+							},
+						},
+					},
+				},
 			}
 
 			for server, config in pairs(servers) do

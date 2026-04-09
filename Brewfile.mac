@@ -17,7 +17,6 @@ brew "git-delta"
 brew "bat"
 
 brew "node"
-brew "pnpm"
 brew "yarn"
 brew "python"
 brew "gnupg"

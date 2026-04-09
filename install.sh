@@ -65,7 +65,7 @@ install_macos() {
 
   if [[ -f "$REPO_DIR/Brewfile.mac" ]]; then
     log "Instalando fórmulas desde Brewfile.mac..."
-    brew bundle --file="$REPO_DIR/Brewfile.mac"
+    brew bundle --file="$REPO_DIR/Brewfile.mac" --no-upgrade
     ok "brew bundle completo."
   else
     warn "No se encontró Brewfile.mac. Saltando."
@@ -115,7 +115,7 @@ apply_stow() {
 setup_git() {
   if [[ -L "$HOME/.gitignore_global" || -f "$HOME/.gitignore_global" ]]; then
     log "Configurando Git para usar ~/.gitignore_global..."
-    git config --global core.excludesfile '$HOME/.gitignore_global'
+    git config --global core.excludesfile '~/.gitignore_global'
     ok "Git configurado con excludesfile."
   else
     warn "No se encontró ~/.gitignore_global después de stow."

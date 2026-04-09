@@ -1,16 +1,16 @@
 # Dotfiles
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=white)
 ![macOS](https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=white)
 ![Zsh](https://img.shields.io/badge/Shell-Zsh-89e051.svg?logo=gnu-bash&logoColor=white)
-![Neovim](https://img.shields.io/badge/Editor-Neovim-3ECF8E?logo=neovim&logoColor=white)
 ![Tmux](https://img.shields.io/badge/Terminal-Tmux-1BB91F?logo=tmux&logoColor=white)
+![Neovim](https://img.shields.io/badge/Editor-Neovim-3ECF8E?logo=neovim&logoColor=white)
+![Kitty](https://img.shields.io/badge/Terminal-Kitty-pink?logo=&logoColor=white)
+![Starship](https://img.shields.io/badge/Prompt-Starship-DD0B78?logo=&logoColor=white)
 ![GNU Stow](https://img.shields.io/badge/Made%20with-GNU%20Stow-orange)
-![TPM](https://img.shields.io/badge/Tmux-Plugin%20Manager-blue)
 
-Colección personal de **dotfiles** y configuraciones para entornos de desarrollo en **Linux (Arch)** y **macOS**.
-Incluye configuraciones de **Zsh**, **Git**, **Tmux**, **Neovim** y scripts de instalación para automatizar el setup de un nuevo sistema.
+Colección personal de **dotfiles** y configuraciones para entornos de desarrollo en **macOS**.
+Incluye configuraciones de **Zsh**, **Git**, **Kitty**, **Tmux**, **Starship**, **Neovim** y scripts de instalación para automatizar el setup de un nuevo sistema.
 
 ---
 
@@ -18,18 +18,21 @@ Incluye configuraciones de **Zsh**, **Git**, **Tmux**, **Neovim** y scripts de i
 
 - Configuración de **Zsh**
   - Alias y funciones personalizados
-  - Integración con **Oh My Zsh** (plugin `git`)
+  - Gestor de plugins con **Antidote**
+  - Integración con plugins seleccionados (git, composer, laravel, npm, docker)
+  - FZF, fast-syntax-highlighting, fzf-tab
+- Configuración de **Starship**
+- Configuración de **Kitty**
 - Configuración global de **Git** (`.gitconfig`, `.gitignore_global`)
 - Configuración de **Tmux**
   - Prefijo en `Ctrl+a`
   - Movimientos tipo Vim en panes
-  - Copiar al portapapeles en macOS (`pbcopy`) o Linux (`xclip`)
+  - Copiar al portapapeles en macOS (`pbcopy`)
   - Plugins vía **TPM** (`tmux-sensible`, `tmux-resurrect`, `tmux-continuum`)
 - Configuración de **Neovim**
   - Modular (configuración en `~/.config/nvim`)
-  - Preparado para gestores de plugins (vim-plug, packer, etc.)
+  - Uso de Lazy
 - Instalación de paquetes:
-  - Arch Linux → `packages.arch` + `aur-packages.arch`
   - macOS → `Brewfile.mac`
 - Symlinks automáticos con **GNU Stow**
 
@@ -39,14 +42,13 @@ Incluye configuraciones de **Zsh**, **Git**, **Tmux**, **Neovim** y scripts de i
 
 - **Git**
 - **Zsh** como shell principal
-- **Oh My Zsh** (para el plugin `git` en `.zshrc`)
-  ```bash
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  ```
-- **GNU Stow** (el script lo instala si no está presente)
-- Acceso a un sistema:
-  - Arch Linux (con `pacman` y opcionalmente `yay`)
-  - macOS (con `brew`)
+- Los siguientes se instalan automáticamente con `Brewfile.mac`:
+  - **Antidote** (gestor de plugins para Zsh)
+  - **Starship** (prompt moderno)
+  - **Kitty** (emulador de terminal)
+  - **Neovim**
+  - **Tmux**
+  - Otros tools (fzf, fd, delta, zoxide, etc.)
 
 ---
 
@@ -71,7 +73,6 @@ WARNING! stowing shell would cause conflicts:
  * cannot stow .../.zprofile over existing target .zprofile
  * cannot stow .../.zshrc over existing target .zshrc
 All operations aborted.
-
 ```
 
 significa que ya tienes dotfiles en tu `$HOME` que entran en conflicto.
@@ -80,25 +81,7 @@ Para resolverlo fácilmente, este repo incluye un script de limpieza:
 ```bash
 ./cleanup.sh
 ./install.sh
-
-
-El script detecta tu sistema operativo, instala dependencias y enlaza los dotfiles en tu `$HOME` usando **GNU Stow**.
-
-### Arch Linux
-
-```bash
-sudo pacman -Syu --noconfirm
-sudo pacman -S --needed - < packages.arch
-yay -S --needed - < aur-packages.arch
 ```
-
-### macOS
-
-```bash
-brew bundle --file=Brewfile.mac
-```
-
----
 
 ## Advertencia
 
@@ -116,14 +99,14 @@ El archivo [`.gitconfig`](./git/.gitconfig) incluido en este repo contiene opcio
 git config --global user.name "Tu Nombre"
 git config --global user.email "tu-email@example.com"
 ```
+
 ## Qué hace el script
 
-1. Detecta el sistema operativo (macOS / Arch Linux / otro Linux).
-2. Instala dependencias con `brew`, `pacman` o `yay`.
+1. Detecta el sistema operativo.
+2. Instala dependencias con `brew`.
 3. Aplica **symlinks** de los dotfiles con GNU Stow.
 4. Configura **Git** con `~/.gitignore_global`.
 5. Instala **TPM (Tmux Plugin Manager)**.
-6. Da tips finales para activar plugins en Tmux y Neovim.
 
 ---
 
@@ -132,21 +115,21 @@ git config --global user.email "tu-email@example.com"
 ```
 dotfiles/
 ├── git/              # Configuración de Git
-├── shell/            # Configuración de Zsh (alias, funciones, zshrc, zprofile)
+├── shell/            # Configuración de Zsh
+├── starship/         # Configuración de Starship
+├── kitty/            # Configuración de Kitty
 ├── tmux/             # Configuración de Tmux
-├── nvim/              # Configuración de Neovim
-├── packages.arch     # Paquetes oficiales (pacman)
-├── aur-packages.arch # Paquetes AUR (yay)
-├── Brewfile.mac      # Paquetes para macOS (Homebrew)
-└── install.sh        # Script de instalación
+├── nvim/             # Configuración de Neovim
+├── Brewfile.mac      # Paquetes para macOS
+├── install.sh        # Script de instalación
+└── cleanup.sh        # Script de limpieza
 ```
 
 ---
 
 ## Screenshots
 
-![Screenshot](.github/assets/screenshot.png)
----
+## ![Screenshot](.github/assets/screenshot.png)
 
 ## Licencia
 

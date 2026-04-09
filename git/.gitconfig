@@ -1,20 +1,15 @@
 [user]
-
     name = sebacruz1
     email = sebastiancruzpomar@gmail.com
-
 [core]
     editor = nvim
     autocrlf = input
-	excludesfile = /Users/seba/.gitignore_global
+    excludesfile = ~/.gitignore_global
     filemode = false
-
 [color]
     ui = auto
-
 [init]
     defaultBranch = main
-
 [alias]
     st = status
     co = checkout
@@ -28,25 +23,24 @@
     unsave = stash pop
     changes = diff --cached
     ls = ls-files
-
 [diff]
     tool = nvimdiff
-
+    colorMoved = default
 [difftool "nvimdiff"]
     path = nvimdiff
-
 [merge]
     tool = nvimdiff
-
 [push]
     default = simple
-	autoSetupRemote = true
-
-[pager]
-  diff = diff-so-fancy | less --tabs=4 -RFX
-  log  = diff-so-fancy | less --tabs=4 -RFX
-  show = diff-so-fancy | less --tabs=4 -RFX
-
-
+    autoSetupRemote = true
 [fetch]
-	prune = true
+    prune = true
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true
+    side-by-side = true
+    line-numbers = true
+    syntax-theme = Dracula

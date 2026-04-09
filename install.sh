@@ -122,12 +122,31 @@ setup_git() {
   fi
 }
 
+ensure_antidote() {
+  local plugins_file="$HOME/.zsh_plugins.txt"
+  if [[ ! -f "$plugins_file" ]]; then
+    warn "No se encontró ~/.zsh_plugins.txt."
+  fi
+}
+
+setup_nvim_plugins() {
+  if need_cmd nvim; then
+    log "Instalando plugins de Neovim..."
+    nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+    ok "Plugins de Neovim instalados."
+  fi
+}
+
 ensure_tpm() {
   if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
     log "Instalando tmux plugin manager (TPM)..."
     git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-    ok "TPM instalado. Dentro de tmux, ejecuta: prefix + I"
+    ok "TPM instalado."
   fi
+
+  log "Instalando plugins de tmux..."
+  "$HOME/.tmux/plugins/tpm/bin/install_plugins" || true
+  ok "Plugins de tmux instalados."
 }
 
 final_tips() {
@@ -140,6 +159,8 @@ main() {
   apply_stow
   setup_git
   setup_runtime
+  ensure_antidote
+  setup_nvim_plugins
   ensure_tpm
   final_tips
 }

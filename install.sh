@@ -71,12 +71,6 @@ install_macos() {
     warn "No se encontró Brewfile.mac. Saltando."
   fi
 
-  if ! need_cmd nvim; then
-    log "Instalando Neovim..."
-    brew install neovim
-    ok "Neovim instalado."
-  fi
-
   if brew list fzf >/dev/null 2>&1; then
     log "Configurando fzf keybindings/completion..."
     "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc || true
@@ -85,11 +79,6 @@ install_macos() {
 }
 
 apply_stow() {
-  if ! need_cmd stow; then
-    log "Instalando stow..."
-    brew install stow
-    ok "stow instalado."
-  fi
 
   backup ".zshrc"; backup ".zprofile"
   backup ".aliases.zsh"; backup ".functions.zsh"
@@ -97,7 +86,7 @@ apply_stow() {
   backup ".gitconfig"; backup ".gitignore_global"
 
   backup ".config/starship.toml"
-  backup ".wezterm.lua"
+  backup ".config/kitty"
 
   backup ".config/nvim"
   backup ".local/state/nvim"
@@ -107,7 +96,7 @@ apply_stow() {
 
   pushd "$REPO_DIR" >/dev/null
 
-  for pkg in shell nvim tmux git starship wezterm; do
+  for pkg in shell nvim tmux git starship kitty; do
     if [[ -d "$pkg" ]]; then
       log "stow $pkg -> \$HOME"
       stow -v -R -t "$HOME" "$pkg"
@@ -116,13 +105,6 @@ apply_stow() {
 
   popd >/dev/null
   ok "Symlinks aplicados con Stow."
-
-  # Fallback symlinks for wezterm and starship if stow didn't create them
-  if [[ -f "$REPO_DIR/wezterm/.wezterm.lua" ]]; then
-    mkdir -p "$HOME"
-    ln -sfn "$REPO_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
-    log "Symlinked ~/.wezterm.lua -> $REPO_DIR/wezterm/.wezterm.lua"
-  fi
 
   if [[ -f "$REPO_DIR/starship/starship.toml" ]]; then
     mkdir -p "$HOME/.config"

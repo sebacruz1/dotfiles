@@ -115,7 +115,7 @@ apply_stow() {
 setup_git() {
   if [[ -L "$HOME/.gitignore_global" || -f "$HOME/.gitignore_global" ]]; then
     log "Configurando Git para usar ~/.gitignore_global..."
-    git config --global core.excludesfile "$HOME/.gitignore_global"
+    git config --global core.excludesfile '$HOME/.gitignore_global'
     ok "Git configurado con excludesfile."
   else
     warn "No se encontró ~/.gitignore_global después de stow."
@@ -126,14 +126,6 @@ ensure_antidote() {
   local plugins_file="$HOME/.zsh_plugins.txt"
   if [[ ! -f "$plugins_file" ]]; then
     warn "No se encontró ~/.zsh_plugins.txt."
-  fi
-}
-
-setup_nvim_plugins() {
-  if need_cmd nvim; then
-    log "Instalando plugins de Neovim..."
-    nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
-    ok "Plugins de Neovim instalados."
   fi
 }
 
@@ -160,7 +152,6 @@ main() {
   setup_git
   setup_runtime
   ensure_antidote
-  setup_nvim_plugins
   ensure_tpm
   final_tips
 }

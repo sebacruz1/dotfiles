@@ -4,7 +4,7 @@
 [core]
     editor = nvim
     autocrlf = input
-    excludesfile = ~/.gitignore_global
+	excludesfile = ~/.gitignore_global
     filemode = false
 [color]
     ui = auto

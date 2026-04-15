@@ -87,4 +87,4 @@ if command -v starship >/dev/null 2>&1; then
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
-. "/Users/seba/.deno/env"
+[[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"

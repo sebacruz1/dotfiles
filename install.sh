@@ -105,12 +105,6 @@ apply_stow() {
 
   popd >/dev/null
   ok "Symlinks aplicados con Stow."
-
-  if [[ -f "$REPO_DIR/starship/starship.toml" ]]; then
-    mkdir -p "$HOME/.config"
-    ln -sfn "$REPO_DIR/starship/starship.toml" "$HOME/.config/starship.toml"
-    log "Symlinked ~/.config/starship.toml -> $REPO_DIR/starship/starship.toml"
-  fi
 }
 setup_git() {
   if [[ -L "$HOME/.gitignore_global" || -f "$HOME/.gitignore_global" ]]; then
@@ -119,6 +113,16 @@ setup_git() {
     ok "Git configurado con excludesfile."
   else
     warn "No se encontró ~/.gitignore_global después de stow."
+  fi
+
+  if [[ ! -f "$HOME/.gitconfig.local" ]]; then
+    cat > "$HOME/.gitconfig.local" <<'EOF'
+[user]
+    name = Tu Nombre
+    email = tu-email@example.com
+EOF
+    chmod 600 "$HOME/.gitconfig.local" 2>/dev/null || true
+    warn "Creado ~/.gitconfig.local con placeholders. Edita ese archivo con tus credenciales."
   fi
 }
 

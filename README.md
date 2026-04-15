@@ -93,11 +93,19 @@ Para resolverlo fácilmente, este repo incluye un script de limpieza:
 
 ## Configuración de Git
 
-El archivo [`.gitconfig`](./git/.gitconfig) incluido en este repo contiene opciones globales útiles, pero deberás configurar tus credenciales personales:
+El archivo [`.gitconfig`](./git/.gitconfig) incluido en este repo contiene solo configuración global compartible.
+Las credenciales personales ahora van en `~/.gitconfig.local` (archivo local y **no versionado**).
 
 ```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "tu-email@example.com"
+nvim ~/.gitconfig.local
+```
+
+Contenido recomendado:
+
+```ini
+[user]
+    name = Tu Nombre
+    email = tu-email@example.com
 ```
 
 ## Qué hace el script

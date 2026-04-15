@@ -8,8 +8,9 @@ vim/.vim/pack/
 
 
 .antidote/
+.gitconfig.local
+git/.gitconfig.local
 
 *.swp
 *.swo
 .DS_Store
-

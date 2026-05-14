@@ -29,6 +29,7 @@ map("n", "<leader>p", '"+p', { desc = "Pegar desde el sistema" })
 map("i", "<C-v>", "<C-r>+", { desc = "Pegar desde el sistema en insertar" })
 
 map({ "n", "v" }, "<leader>y", '"+y', { desc = "Copiar al sistema" })
+map("n", "+", "<C-a>", { noremap = true, desc = "Incrementar numero" })
 
 map("n", "q:", "<nop>")
 map("n", "q/", "<nop>")

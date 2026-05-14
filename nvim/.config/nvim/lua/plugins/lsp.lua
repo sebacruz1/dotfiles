@@ -13,9 +13,7 @@ return {
 				ensure_installed = {
 					"pint",
 					"prettierd",
-					"prettier",
 					"stylua",
-					"eslint_d",
 				},
 			})
 		end,
@@ -49,32 +47,63 @@ return {
 		dependencies = { "saghen/blink.cmp" },
 		config = function()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
+			local function shared_ts_settings()
+				return {
+					inlayHints = {
+						parameterNames = { enabled = "literals" },
+						parameterTypes = { enabled = true },
+						variableTypes = { enabled = true },
+						propertyDeclarationTypes = { enabled = true },
+						functionLikeReturnTypes = { enabled = true },
+						enumMemberValues = { enabled = true },
+					},
+					suggest = {
+						completeFunctionCalls = true,
+					},
+					preferences = {
+						importModuleSpecifier = "relative",
+						jsxAttributeCompletionStyle = "auto",
+					},
+					format = {
+						organizeImportsIgnoreCase = false,
+						organizeImportsCollation = "ordinal",
+						organizeImportsNumericCollation = true,
+					},
+				}
+			end
+
+			local function organize_imports(client, bufnr)
+				vim.lsp.buf.code_action({
+					apply = true,
+					bufnr = bufnr,
+					context = {
+						only = { "source.organizeImports" },
+						diagnostics = {},
+					},
+					filter = function(action)
+						return action.kind == "source.organizeImports"
+					end,
+				})
+			end
 
 			vim.api.nvim_create_autocmd("LspAttach", {
 				callback = function(args)
 					local client = vim.lsp.get_client_by_id(args.data.client_id)
 					local opts = { buffer = args.buf, silent = true }
-					
+
 					-- Keymaps generales
 					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
 					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-					
-					-- Comandos específicos para vtsls
+
 					if client and client.name == "vtsls" then
 						vim.keymap.set("n", "gD", vim.lsp.buf.type_definition, opts)
 						vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 						vim.keymap.set("n", "<leader>oi", function()
-							vim.lsp.buf.code_action({
-								apply = true,
-								context = {
-									only = { "source.organizeImports" },
-									diagnostics = {},
-								},
-							})
-						end, { buffer = args.buf, desc = "Organize Imports (No remove)" })
+							organize_imports(client, args.buf)
+						end, { buffer = args.buf, desc = "Organize Imports" })
 					end
 				end,
 			})
@@ -106,24 +135,8 @@ return {
 				eslint = {
 					settings = {
 						workingDirectories = { mode = "auto" },
-						format = false, -- Desactivar formato de eslint, usar prettier
+						format = false,
 					},
-					on_attach = function(client, bufnr)
-						-- Mostrar warnings de imports no usados pero no auto-fix
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							buffer = bufnr,
-							callback = function()
-								-- Solo organizar imports, NO remover
-								vim.lsp.buf.code_action({
-									apply = true,
-									context = {
-										only = { "source.organizeImports" },
-										diagnostics = {},
-									},
-								})
-							end,
-						})
-					end,
 				},
 				hyprls = {},
 				intelephense = {
@@ -150,50 +163,8 @@ return {
 				vtsls = {
 					filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 					settings = {
-						typescript = {
-							inlayHints = {
-								parameterNames = { enabled = "literals" },
-								parameterTypes = { enabled = true },
-								variableTypes = { enabled = true },
-								propertyDeclarationTypes = { enabled = true },
-								functionLikeReturnTypes = { enabled = true },
-								enumMemberValues = { enabled = true },
-							},
-							suggest = {
-								completeFunctionCalls = true,
-							},
-							preferences = {
-								importModuleSpecifier = "relative",
-								jsxAttributeCompletionStyle = "auto",
-							},
-							format = {
-								organizeImportsIgnoreCase = false,
-								organizeImportsCollation = "ordinal",
-								organizeImportsNumericCollation = true,
-							},
-						},
-						javascript = {
-							inlayHints = {
-								parameterNames = { enabled = "literals" },
-								parameterTypes = { enabled = true },
-								variableTypes = { enabled = true },
-								propertyDeclarationTypes = { enabled = true },
-								functionLikeReturnTypes = { enabled = true },
-								enumMemberValues = { enabled = true },
-							},
-							suggest = {
-								completeFunctionCalls = true,
-							},
-							preferences = {
-								importModuleSpecifier = "relative",
-								jsxAttributeCompletionStyle = "auto",
-							},
-							format = {
-								organizeImportsIgnoreCase = false,
-								organizeImportsCollation = "ordinal",
-								organizeImportsNumericCollation = true,
-							},
-						},
+						typescript = shared_ts_settings(),
+						javascript = shared_ts_settings(),
 						vtsls = {
 							experimental = {
 								completion = {

@@ -10,6 +10,7 @@ brew "quick-lint-js"
 brew "ripgrep"
 brew "tmux"
 brew "tree"
+brew "tree-sitter-cli"
 brew "git"
 brew "starship"
 brew "antidote"
@@ -22,4 +23,3 @@ brew "python"
 brew "gnupg"
 
 cask "kitty"
-

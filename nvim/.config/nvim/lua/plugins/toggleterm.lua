@@ -36,7 +36,6 @@ return {
 			vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]], opts)
 			vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]], opts)
 			vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]], opts)
-			vim.keymap.set("t", "<C-s>", [[<C-\><C-n><cmd>1ToggleTerm<CR>]], opts)
 		end
 
 		vim.api.nvim_create_autocmd("TermOpen", {

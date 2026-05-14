@@ -10,6 +10,7 @@ vim/.vim/pack/
 .antidote/
 .gitconfig.local
 git/.gitconfig.local
+AGENTS.MD
 
 *.swp
 *.swo

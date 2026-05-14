@@ -42,3 +42,6 @@
     syntax-theme = Dracula
 [include]
     path = ~/.gitconfig.local
+[user]
+	email = your@email.com
+	name = your-username

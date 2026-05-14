@@ -3,9 +3,7 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
 
-# setopt SHARE_HISTORY
 setopt APPEND_HISTORY
-setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
 setopt hup
@@ -44,7 +42,7 @@ if command -v brew >/dev/null 2>&1; then
   [[ -r "$FZF_PREFIX/shell/key-bindings.zsh" ]] && source "$FZF_PREFIX/shell/key-bindings.zsh"
   [[ -r "$FZF_PREFIX/shell/completion.zsh"   ]] && source "$FZF_PREFIX/shell/completion.zsh"
 fi
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+[[ -r "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh" ]] && source "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
 
 ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
 ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"

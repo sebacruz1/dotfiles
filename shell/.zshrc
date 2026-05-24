@@ -15,7 +15,8 @@ export VISUAL=nvim
 export MANPAGER="nvim +Man!"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_DEFAULT_OPTS='--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca --height 40% --layout=reverse'
-#
+
+# Configuracion multiplataforma para Homebrew (macOS)
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
   [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
@@ -38,13 +39,22 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons --git
 zstyle ':fzf-tab:complete:php:argument-1' fzf-preview '[[ $word == "artisan" ]] && php artisan help $word || echo "No es un comando de artisan"'
 zstyle ':fzf-tab:complete:git-(checkout|show|diff):*' fzf-preview 'git show --color=always $word | delta --line-numbers'
 
-
-if command -v brew >/dev/null 2>&1; then
+# Correccion 1: Carga de FZF multiplataforma
+if [[ "$OSTYPE" == "darwin"* ]] && command -v brew >/dev/null 2>&1; then
   FZF_PREFIX="$HOMEBREW_PREFIX/opt/fzf"
   [[ -r "$FZF_PREFIX/shell/key-bindings.zsh" ]] && source "$FZF_PREFIX/shell/key-bindings.zsh"
   [[ -r "$FZF_PREFIX/shell/completion.zsh"   ]] && source "$FZF_PREFIX/shell/completion.zsh"
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  [[ -r "/usr/share/fzf/key-bindings.zsh" ]] && source "/usr/share/fzf/key-bindings.zsh"
+  [[ -r "/usr/share/fzf/completion.zsh"   ]] && source "/usr/share/fzf/completion.zsh"
 fi
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+
+# Correccion 2: Carga de Antidote multiplataforma
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+else
+  source /usr/share/zsh-antidote/antidote.zsh
+fi
 
 ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
 ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
@@ -74,17 +84,21 @@ bindkey -e
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
-eval "$(zoxide init zsh)"
+# Correccion 3: Validacion de Zoxide
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
 
 export PATH="/usr/local/mysql/bin:$PATH"
 export PATH=$PATH:$HOME/.config/composer/vendor/bin
+export PATH="$HOME/.local/bin:$PATH"
 
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-export PATH="$HOME/.local/bin:$PATH"
 [[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"

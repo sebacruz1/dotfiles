@@ -15,7 +15,11 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_DEFAULT_OPTS='--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca --height 40% --layout=reverse'
 #
 if command -v brew >/dev/null 2>&1; then
-  eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
+  _brew_cache="$HOME/.cache/zsh/brew_env.zsh"
+  if [[ ! -f "$_brew_cache" ]]; then
+    brew shellenv > "$_brew_cache"
+  fi
+  source "$_brew_cache"
   [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
 fi
 
@@ -25,7 +29,7 @@ export ZSH_CACHE_DIR=$HOME/.cache/zsh
 [[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
 
 autoload -Uz compinit
-compinit -i
+compinit -C
 
 zstyle ':completion:*' menu no
 zstyle ':completion:*:descriptions' format '[%d]'
@@ -58,7 +62,7 @@ ohmyzsh/ohmyzsh path:plugins/docker-compose
 paulirish/git-open
 fdellwing/zsh-bat
 Aloxaf/fzf-tab
-zdharma-continuum/fast-syntax-highlighting
+zsh-users/zsh-syntax-highlighting
 EOF
 fi
 
@@ -72,7 +76,11 @@ bindkey -e
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
-eval "$(zoxide init zsh)"
+_zoxide_cache="$HOME/.cache/zsh/zoxide_init.zsh"
+if [[ ! -f "$_zoxide_cache" ]]; then
+  zoxide init zsh > "$_zoxide_cache"
+fi
+source "$_zoxide_cache"
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
@@ -80,9 +88,11 @@ eval "$(zoxide init zsh)"
 export PATH="/usr/local/mysql/bin:$PATH"
 export PATH=$PATH:$HOME/.config/composer/vendor/bin
 
-if command -v starship >/dev/null 2>&1; then
-  eval "$(starship init zsh)"
+_starship_cache="$HOME/.cache/zsh/starship_init.zsh"
+if [[ ! -f "$_starship_cache" ]]; then
+  starship init zsh > "$_starship_cache"
 fi
+source "$_starship_cache"
 
 export PATH="$HOME/.local/bin:$PATH"
 [[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"

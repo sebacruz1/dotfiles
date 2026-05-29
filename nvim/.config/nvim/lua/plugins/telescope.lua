@@ -58,6 +58,7 @@ return {
 			map("n", "<leader>fb", builtin.buffers, { desc = "Ver buffers", silent = true })
 			map("n", "<leader>rg", builtin.live_grep, { desc = "Live Grep", silent = true })
 			map("n", "<leader>b", builtin.oldfiles, { desc = "Recientes (Proyecto)", silent = true })
+			map("n", "<leader>gs", builtin.git_status, { desc = "Git: archivos cambiados", silent = true })
 		end,
 	},
 }

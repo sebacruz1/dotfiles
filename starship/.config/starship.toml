@@ -43,5 +43,5 @@ format = "[$duration]($style)"
 ssh_only = true
 trim_at = "."
 style = "bold yellow"
-format = "on([($hostname)]($style)) "
+format = "([($hostname)]($style)) "
 

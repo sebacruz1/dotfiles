@@ -32,6 +32,10 @@ return {
 						"%.git/",
 						"Icon\r",
 						"%._.*",
+						"venv/",
+						"%.venv/",
+						"__pycache__/",
+						"%.pyc$",
 					},
 					mappings = {
 						i = {

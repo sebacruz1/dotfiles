@@ -2,13 +2,7 @@
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
-
-# setopt SHARE_HISTORY
-setopt APPEND_HISTORY
-setopt INC_APPEND_HISTORY
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt hup
+setopt APPEND_HISTORY INC_APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE hup
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -16,48 +10,8 @@ export MANPAGER="nvim +Man!"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_DEFAULT_OPTS='--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca --height 40% --layout=reverse'
 
-# Configuracion multiplataforma para Homebrew (macOS)
-if command -v brew >/dev/null 2>&1; then
-  eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
-  [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]] && fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
-fi
-
-[[ -d /usr/share/zsh/site-functions ]] && fpath+=("/usr/share/zsh/site-functions")
-
-export ZSH_CACHE_DIR=$HOME/.cache/zsh
-[[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
-
-autoload -Uz compinit
-compinit -i
-
-zstyle ':completion:*' menu no
-zstyle ':completion:*:descriptions' format '[%d]'
-zstyle ':completion:*' completer _extensions _complete _approximate _ignored
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*' 'm:{a-zA-Z}={A-Za-z} r:|[._-]=* r:|=* l:|=* r:|=*'
-zstyle ':fzf-tab:*' fzf-flags '--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons --git $realpath'
-zstyle ':fzf-tab:complete:php:argument-1' fzf-preview '[[ $word == "artisan" ]] && php artisan help $word || echo "No es un comando de artisan"'
-zstyle ':fzf-tab:complete:git-(checkout|show|diff):*' fzf-preview 'git show --color=always $word | delta --line-numbers'
-
-# Correccion 1: Carga de FZF multiplataforma
-if [[ "$OSTYPE" == "darwin"* ]] && command -v brew >/dev/null 2>&1; then
-  FZF_PREFIX="$HOMEBREW_PREFIX/opt/fzf"
-  [[ -r "$FZF_PREFIX/shell/key-bindings.zsh" ]] && source "$FZF_PREFIX/shell/key-bindings.zsh"
-  [[ -r "$FZF_PREFIX/shell/completion.zsh"   ]] && source "$FZF_PREFIX/shell/completion.zsh"
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  [[ -r "/usr/share/fzf/key-bindings.zsh" ]] && source "/usr/share/fzf/key-bindings.zsh"
-  [[ -r "/usr/share/fzf/completion.zsh"   ]] && source "/usr/share/fzf/completion.zsh"
-fi
-
-# Correccion 2: Carga de Antidote multiplataforma
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
-else
-  source /usr/share/zsh-antidote/antidote.zsh
-fi
-
-ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
-ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
+export ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
+export ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
 
 if [[ ! -f "$ZPLUGINS" ]]; then
   cat > "$ZPLUGINS" <<'EOF'
@@ -74,31 +28,33 @@ zdharma-continuum/fast-syntax-highlighting
 EOF
 fi
 
-if [[ ! -f "$ZSTATIC" || "$ZPLUGINS" -nt "$ZSTATIC" ]]; then
-  antidote bundle < "$ZPLUGINS" > "$ZSTATIC"
-fi
+source ~/.antidote/antidote.zsh
+
+antidote bundle < "$ZPLUGINS" > "$ZSTATIC"
+
+autoload -Uz compinit
+compinit -i
+
 source "$ZSTATIC"
 
-bindkey -e
+zstyle ':completion:*' menu no
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' completer _extensions _complete _approximate _ignored
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':fzf-tab:*' fzf-flags '--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons --git $realpath'
+zstyle ':fzf-tab:complete:php:argument-1' fzf-preview '[[ $word == "artisan" ]] && php artisan help $word || echo "No es un comando de artisan"'
+zstyle ':fzf-tab:complete:git-(checkout|show|diff):*' fzf-preview 'git show --color=always $word | delta --line-numbers'
 
-autoload -Uz bracketed-paste-magic
-zle -N bracketed-paste bracketed-paste-magic
-
-# Correccion 3: Validacion de Zoxide
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh)"
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  [[ -r "/usr/share/fzf/key-bindings.zsh" ]] && source "/usr/share/fzf/key-bindings.zsh"
+  [[ -r "/usr/share/fzf/completion.zsh"   ]] && source "/usr/share/fzf/completion.zsh"
 fi
 
+bindkey -e
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
 
-export PATH="/usr/local/mysql/bin:$PATH"
-export PATH=$PATH:$HOME/.config/composer/vendor/bin
-export PATH="$HOME/.local/bin:$PATH"
-
-if command -v starship >/dev/null 2>&1; then
-  eval "$(starship init zsh)"
-fi
-
-[[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"
+if command -v zoxide >/dev/null 2>&1; then eval "$(zoxide init zsh)"; fi
+if command -v starship >/dev/null 2>&1; then eval "$(starship init zsh)"; fi

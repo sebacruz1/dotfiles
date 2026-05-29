@@ -71,3 +71,5 @@ target/
 bin/
 .github/copilot-instructions.md
 
+
+**/.claude/settings.local.json

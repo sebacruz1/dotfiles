@@ -1,7 +1,7 @@
 add_newline = false
 
 "$schema" = 'https://starship.rs/config-schema.json'
-format = "$directory$git_branch$git_status$character "
+format = "$directory$hostname$git_branch$git_status$character "
 right_format = "$cmd_duration"
 
 [line_break]
@@ -38,4 +38,10 @@ vicmd_symbol = "[<](bold yellow)"
 min_time = 500
 style = "yellow"
 format = "[$duration]($style)"
+
+[hostname]
+ssh_only = true
+trim_at = "."
+style = "bold yellow"
+format = "on([($hostname)]($style)) "
 

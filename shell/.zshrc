@@ -10,6 +10,7 @@ export MANPAGER="nvim +Man!"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_DEFAULT_OPTS='--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca --height 40% --layout=reverse'
 
+export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
 export ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
 export ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
 

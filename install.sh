@@ -8,7 +8,7 @@ PACKAGES=(git kitty nvim shell starship tmux)
 
 echo "==> Aplicando stow..."
 for pkg in "${PACKAGES[@]}"; do
-  stow -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
+  stow -R -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
   echo "    stow: $pkg"
 done
 

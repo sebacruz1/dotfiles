@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Paquetes requeridos por los dotfiles que no vienen en CachyOS por defecto
+# Uso: bash packages.arch
+
+set -e
+
+PACMAN=(
+    eza
+    fd
+    fzf
+    bat
+    zoxide
+)
+
+AUR=(
+    quick-lint-js
+)
+
+echo "==> Instalando paquetes con pacman..."
+sudo pacman -S --needed "${PACMAN[@]}"
+
+echo "==> Instalando paquetes AUR con yay..."
+yay -S --needed "${AUR[@]}"
+
+echo "==> Listo."

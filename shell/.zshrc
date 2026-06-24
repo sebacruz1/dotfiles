@@ -39,7 +39,11 @@ zstyle ':fzf-tab:complete:git-(checkout|show|diff):*' fzf-preview 'git show --co
 if command -v brew >/dev/null 2>&1; then
   [[ -r "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh" ]] && source "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
 else
-  [[ -r "$HOME/.antidote/antidote.zsh" ]] && source "$HOME/.antidote/antidote.zsh"
+  if [[ -r "/usr/share/zsh-antidote/antidote.zsh" ]]; then
+    source "/usr/share/zsh-antidote/antidote.zsh"
+  elif [[ -r "$HOME/.antidote/antidote.zsh" ]]; then
+    source "$HOME/.antidote/antidote.zsh"
+  fi
 fi
 
 ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"

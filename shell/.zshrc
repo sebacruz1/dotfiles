@@ -2,18 +2,14 @@
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=200000
 SAVEHIST=200000
-
-setopt APPEND_HISTORY
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt hup
+setopt APPEND_HISTORY INC_APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE hup
 
 export EDITOR=nvim
 export VISUAL=nvim
 export MANPAGER="nvim +Man!"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 export FZF_DEFAULT_OPTS='--color=bg+:#2d4f67,bg:#1f1f28,hl:#7e9cd8,fg:#dcd7ba,prompt:#7fb4ca --height 40% --layout=reverse'
-#
+
 if command -v brew >/dev/null 2>&1; then
   _brew_cache="$HOME/.cache/zsh/brew_env.zsh"
   if [[ ! -f "$_brew_cache" ]]; then
@@ -25,7 +21,7 @@ fi
 
 [[ -d /usr/share/zsh/site-functions ]] && fpath+=("/usr/share/zsh/site-functions")
 
-export ZSH_CACHE_DIR=$HOME/.cache/zsh
+export ZSH_CACHE_DIR="$HOME/.cache/zsh"
 [[ ! -d "$ZSH_CACHE_DIR/completions" ]] && mkdir -p "$ZSH_CACHE_DIR/completions"
 
 autoload -Uz compinit
@@ -40,13 +36,11 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always --icons --git
 zstyle ':fzf-tab:complete:php:argument-1' fzf-preview '[[ $word == "artisan" ]] && php artisan help $word || echo "No es un comando de artisan"'
 zstyle ':fzf-tab:complete:git-(checkout|show|diff):*' fzf-preview 'git show --color=always $word | delta --line-numbers'
 
-
 if command -v brew >/dev/null 2>&1; then
-  FZF_PREFIX="$HOMEBREW_PREFIX/opt/fzf"
-  [[ -r "$FZF_PREFIX/shell/key-bindings.zsh" ]] && source "$FZF_PREFIX/shell/key-bindings.zsh"
-  [[ -r "$FZF_PREFIX/shell/completion.zsh"   ]] && source "$FZF_PREFIX/shell/completion.zsh"
+  [[ -r "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh" ]] && source "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
+else
+  [[ -r "$HOME/.antidote/antidote.zsh" ]] && source "$HOME/.antidote/antidote.zsh"
 fi
-[[ -r "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh" ]] && source "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
 
 ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
 ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
@@ -62,7 +56,7 @@ ohmyzsh/ohmyzsh path:plugins/docker-compose
 paulirish/git-open
 fdellwing/zsh-bat
 Aloxaf/fzf-tab
-zsh-users/zsh-syntax-highlighting
+zdharma-continuum/fast-syntax-highlighting
 EOF
 fi
 
@@ -71,28 +65,29 @@ if [[ ! -f "$ZSTATIC" || "$ZPLUGINS" -nt "$ZSTATIC" ]]; then
 fi
 source "$ZSTATIC"
 
+if command -v brew >/dev/null 2>&1; then
+  FZF_PREFIX="$HOMEBREW_PREFIX/opt/fzf"
+  [[ -r "$FZF_PREFIX/shell/key-bindings.zsh" ]] && source "$FZF_PREFIX/shell/key-bindings.zsh"
+  [[ -r "$FZF_PREFIX/shell/completion.zsh"   ]] && source "$FZF_PREFIX/shell/completion.zsh"
+else
+  [[ -r "/usr/share/fzf/key-bindings.zsh" ]] && source "/usr/share/fzf/key-bindings.zsh"
+  [[ -r "/usr/share/fzf/completion.zsh"   ]] && source "/usr/share/fzf/completion.zsh"
+fi
+
 bindkey -e
 
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
-_zoxide_cache="$HOME/.cache/zsh/zoxide_init.zsh"
-if [[ ! -f "$_zoxide_cache" ]]; then
-  zoxide init zsh > "$_zoxide_cache"
-fi
-source "$_zoxide_cache"
 [[ -r ~/.aliases.zsh   ]] && source ~/.aliases.zsh
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
-[ -f "$HOME/.aliases.local.zsh"  ] && source "$HOME/.aliases.local.zsh"
+[[ -f "$HOME/.aliases.local.zsh" ]] && source "$HOME/.aliases.local.zsh"
 
 export PATH="/usr/local/mysql/bin:$PATH"
-export PATH=$PATH:$HOME/.config/composer/vendor/bin
-
-_starship_cache="$HOME/.cache/zsh/starship_init.zsh"
-if [[ ! -f "$_starship_cache" ]]; then
-  starship init zsh > "$_starship_cache"
-fi
-source "$_starship_cache"
-
+export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 export PATH="$HOME/.local/bin:$PATH"
+
 [[ -f "$HOME/.deno/env" ]] && source "$HOME/.deno/env"
+
+if command -v zoxide >/dev/null 2>&1; then eval "$(zoxide init zsh)"; fi
+if command -v starship >/dev/null 2>&1; then eval "$(starship init zsh)"; fi

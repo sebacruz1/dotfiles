@@ -45,3 +45,5 @@
 [user]
 	email = your@email.com
 	name = your-username
+[pull]
+	rebase = false

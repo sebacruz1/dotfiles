@@ -24,7 +24,7 @@ return {
 			dashboard.button("g", " Buscar texto", ":Telescope live_grep<CR>"),
 			dashboard.button("c", " Editar configuracion", ":Telescope find_files cwd=~/Documents/dotfiles/<CR>"),
 			dashboard.button("l", " Lazy", ":Lazy<CR>"),
-			dashboard.button("G", " Estado de Git (Lazygit)", ":LazyGit<CR>"),
+			dashboard.button("G", " Estado de Git", ":LazyGit<CR>"),
 			dashboard.button("q", " Salir", ":qa<CR>"),
 		}
 

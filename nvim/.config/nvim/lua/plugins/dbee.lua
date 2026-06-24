@@ -1,8 +1,26 @@
 return {
 	"kndndrj/nvim-dbee",
-	lazy = true,
 	dependencies = {
 		"MunifTanjim/nui.nvim",
+	},
+	cmd = { "Dbee" },
+	keys = {
+		{
+			"<leader>db",
+			function()
+				require("dbee").toggle()
+			end,
+			desc = "Toggle Dbee",
+		},
+		{
+			"<leader>dc",
+			function()
+				local connections_file = vim.fn.expand("~/.config/dbee/connections.json")
+				vim.fn.mkdir(vim.fn.fnamemodify(connections_file, ":h"), "p")
+				vim.cmd("edit " .. connections_file)
+			end,
+			desc = "Editar conexiones Dbee",
+		},
 	},
 	build = function()
 		require("dbee").install()
@@ -25,12 +43,5 @@ return {
 				page_size = 100,
 			},
 		})
-
-		vim.keymap.set("n", "<leader>db", function()
-			dbee.toggle()
-		end, { desc = "Toggle Dbee" })
-		vim.keymap.set("n", "<leader>dc", function()
-			vim.cmd("edit " .. connections_file)
-		end, { desc = "Editar conexiones Dbee" })
 	end,
 }

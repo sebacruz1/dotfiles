@@ -16,6 +16,7 @@ alias cpy="composer install && npm install"
 
 alias gcm="git commit -m"
 alias gaa="git add ."
+alias gst='git status'
 
 alias ff='fd --max-depth 1 --type f --hidden --exclude .git'
 alias fv='fd --type f --hidden --exclude .git | fzf | xargs -o nvim'

@@ -87,7 +87,7 @@ zle -N bracketed-paste bracketed-paste-magic
 [[ -r ~/.functions.zsh ]] && source ~/.functions.zsh
 [[ -f "$HOME/.aliases.local.zsh" ]] && source "$HOME/.aliases.local.zsh"
 
-export PATH="/usr/local/mysql/bin:$PATH"
+[[ -d /usr/local/mysql/bin ]] && export PATH="/usr/local/mysql/bin:$PATH"
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 export PATH="$HOME/.local/bin:$PATH"
 

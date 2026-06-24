@@ -15,3 +15,4 @@ AGENTS.MD
 *.swp
 *.swo
 .DS_Store
+kitty/.config/kitty/platform.conf

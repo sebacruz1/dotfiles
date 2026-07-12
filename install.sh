@@ -6,6 +6,9 @@ KITTY_DIR="$HOME/.config/kitty"
 
 PACKAGES=(git kitty nvim shell starship tmux)
 
+echo "==> Limpiando symlinks absolutos conflictivos..."
+[[ -L "$HOME/.tmux.conf" ]] && rm "$HOME/.tmux.conf" && echo "    removed: ~/.tmux.conf"
+
 echo "==> Aplicando stow..."
 for pkg in "${PACKAGES[@]}"; do
   stow -R -d "$DOTFILES_DIR" -t "$HOME" "$pkg"

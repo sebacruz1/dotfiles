@@ -78,7 +78,8 @@ else
   [[ -r "/usr/share/fzf/completion.zsh"   ]] && source "/usr/share/fzf/completion.zsh"
 fi
 
-bindkey -e
+bindkey -v
+export KEYTIMEOUT=20
 
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic

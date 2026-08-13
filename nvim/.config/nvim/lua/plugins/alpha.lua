@@ -39,8 +39,16 @@ return {
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "alpha",
 			callback = function()
-				vim.opt_local.laststatus = 0
-				vim.opt_local.showtabline = 0
+				vim.opt.laststatus = 0
+				vim.opt.showtabline = 0
+				vim.api.nvim_create_autocmd("BufUnload", {
+					buffer = 0,
+					once = true,
+					callback = function()
+						vim.opt.laststatus = 3
+						vim.opt.showtabline = 2
+					end,
+				})
 			end,
 		})
 	end,

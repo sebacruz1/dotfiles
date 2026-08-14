@@ -33,6 +33,7 @@ return {
 					"intelephense",
 					"jdtls",
 					"lua_ls",
+					"marksman",
 					"pyright",
 					"tailwindcss",
 					"vtsls",
@@ -151,6 +152,7 @@ return {
 						Lua = { diagnostics = { globals = { "vim" } }, workspace = { checkThirdParty = false } },
 					},
 				},
+				marksman = {},
 				pyright = {},
 				tailwindcss = {
 					settings = {

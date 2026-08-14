@@ -22,6 +22,8 @@ return {
 				"markdown_inline",
 				"php",
 				"scss",
+				"latex",
+				"yaml",
 			}
 
 			treesitter.setup({

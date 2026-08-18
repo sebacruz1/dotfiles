@@ -18,7 +18,7 @@ return {
 					json = { "prettierd" },
 					css = { "prettierd" },
 					scss = { "prettierd" },
-					markdown = { "prettierd" },
+					markdown = { "markdownlint" },
 					lua = { "stylua" },
 				},
 			})

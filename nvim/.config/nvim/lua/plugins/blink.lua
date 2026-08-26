@@ -1,7 +1,7 @@
 return {
 	{
 		"saghen/blink.cmp",
-		dependencies = "rafamadriz/friendly-snippets",
+		dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
 		version = "*",
 		opts = {
 			keymap = {
@@ -12,6 +12,7 @@ return {
 				["<Tab>"] = { "select_next", "fallback" },
 				["<S-Tab>"] = { "select_prev", "fallback" },
 			},
+			snippets = { preset = "luasnip" },
 			completion = {
 				accept = {
 					auto_brackets = {

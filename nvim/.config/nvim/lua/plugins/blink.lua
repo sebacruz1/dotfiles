@@ -1,7 +1,16 @@
 return {
 	{
 		"saghen/blink.cmp",
-		dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+		dependencies = {
+			{
+				"L3MON4D3/LuaSnip",
+				version = "v2.*",
+				dependencies = { "rafamadriz/friendly-snippets" },
+				config = function()
+					require("luasnip.loaders.from_vscode").lazy_load()
+				end,
+			},
+		},
 		version = "*",
 		opts = {
 			keymap = {
@@ -9,8 +18,8 @@ return {
 				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 				["<C-e>"] = { "hide" },
 				["<CR>"] = { "accept", "fallback" },
-				["<Tab>"] = { "select_next", "fallback" },
-				["<S-Tab>"] = { "select_prev", "fallback" },
+				["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
+				["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
 			},
 			snippets = { preset = "luasnip" },
 			completion = {

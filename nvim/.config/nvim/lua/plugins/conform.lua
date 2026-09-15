@@ -20,6 +20,7 @@ return {
 					scss = { "prettierd" },
 					markdown = { "markdownlint" },
 					lua = { "stylua" },
+					tex = { "latexindent" },
 				},
 			})
 		end,

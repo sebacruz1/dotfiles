@@ -36,6 +36,24 @@ return {
 						"%.venv/",
 						"__pycache__/",
 						"%.pyc$",
+						"build/",
+						"%.aux$",
+						"%.log$",
+						"%.out$",
+						"%.toc$",
+						"%.lof$",
+						"%.lot$",
+						"%.bbl$",
+						"%.blg$",
+						"%.bcf$",
+						"%.run%.xml$",
+						"%.fdb_latexmk$",
+						"%.fls$",
+						"%.synctex%.gz$",
+						"%.nav$",
+						"%.snm$",
+						"%.vrb$",
+						"%.xdv$",
 					},
 					mappings = {
 						i = {
@@ -68,6 +86,12 @@ return {
 			map("n", "<leader>rg", builtin.live_grep, { desc = "Live Grep", silent = true })
 			map("n", "<leader>b", builtin.oldfiles, { desc = "Recientes (Proyecto)", silent = true })
 			map("n", "<leader>gs", builtin.git_status, { desc = "Git: archivos cambiados", silent = true })
+			map("n", "<leader>lf", function()
+				builtin.find_files({
+					prompt_title = "Archivos LaTeX",
+					find_command = { "rg", "--files", "--hidden", "-g", "*.tex" },
+				})
+			end, { desc = "Buscar archivos .tex", silent = true })
 		end,
 	},
 }

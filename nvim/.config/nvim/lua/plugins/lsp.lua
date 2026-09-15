@@ -36,6 +36,7 @@ return {
 					"marksman",
 					"pyright",
 					"tailwindcss",
+					"texlab",
 					"vtsls",
 				},
 			})
@@ -154,6 +155,22 @@ return {
 				},
 				marksman = {},
 				pyright = {},
+				texlab = {
+					settings = {
+						texlab = {
+							build = {
+								executable = "latexmk",
+								args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+								onSave = true,
+							},
+							forwardSearch = {
+								executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
+								args = { "%l", "%p", "%f" },
+							},
+							chktex = { onOpenAndSave = true },
+						},
+					},
+				},
 				tailwindcss = {
 					settings = {
 						tailwindCSS = {

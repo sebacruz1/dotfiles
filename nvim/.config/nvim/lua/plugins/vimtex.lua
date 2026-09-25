@@ -11,6 +11,7 @@ return {
 			build_dir = "build",
 			options = {
 				"-pdf",
+				"-shell-escape",
 				"-interaction=nonstopmode",
 				"-synctex=1",
 			},

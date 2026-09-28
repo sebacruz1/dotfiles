@@ -12,18 +12,20 @@ return {
 
 		vim.g.vimtex_compiler_method = "latexmk"
 		vim.g.vimtex_compiler_latexmk = {
-			build_dir = "build",
+			aux_dir = "../build",
+			out_dir = "../dist",
 			options = {
 				"-pdf",
-				"-shell-escape",
-				"-interaction=nonstopmode",
 				"-synctex=1",
+				"-interaction=nonstopmode",
+				"-file-line-error",
+				"-emulate-aux-dir",
 			},
 		}
 
 		vim.g.vimtex_quickfix_mode = 0
-		vim.g.vimtex_syntax_enabled = 0 -- lo maneja treesitter
-		vim.g.vimtex_indent_enabled = 0 -- lo maneja treesitter
+		vim.g.vimtex_syntax_enabled = 0
+		vim.g.vimtex_indent_enabled = 0
 
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "tex",

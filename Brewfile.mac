@@ -21,5 +21,6 @@ brew "node"
 brew "yarn"
 brew "python"
 brew "gnupg"
+brew "deno"
 
 cask "kitty"

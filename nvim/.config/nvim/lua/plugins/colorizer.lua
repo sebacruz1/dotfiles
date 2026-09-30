@@ -3,13 +3,14 @@ return {
 		"catgoose/nvim-colorizer.lua",
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
-			require("colorizer").setup({ "*" }, {
-				RGB = true,
-				RRGGBB = true,
-				names = false,
-				tailwind = true,
-				rgb_fn = true,
-				mode = "background",
+			require("colorizer").setup({
+				filetypes = {
+					"*",
+					-- En LaTeX no pintar nombres de colores (red, blue, ...) escritos en el texto
+					tex = { names = false },
+					plaintex = { names = false },
+					bib = { names = false },
+				},
 			})
 		end,
 	},

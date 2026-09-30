@@ -52,3 +52,18 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.tabstop = 2
 	end,
 })
+
+-- LaTeX: ajuste de línea visual y movimiento por línea en pantalla (solo en buffers tex)
+vim.api.nvim_create_autocmd("FileType", {
+	group = group,
+	pattern = { "tex", "plaintex", "bib" },
+	callback = function(args)
+		vim.opt_local.wrap = true
+		vim.opt_local.linebreak = true
+		vim.opt_local.breakindent = true
+
+		local opts = { buffer = args.buf, silent = true }
+		vim.keymap.set({ "n", "v" }, "j", "gj", opts)
+		vim.keymap.set({ "n", "v" }, "k", "gk", opts)
+	end,
+})

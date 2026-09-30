@@ -53,6 +53,15 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "typescriptreact", "tsx" },
+	callback = function(args)
+		local opts = { buffer = args.buf, noremap = true, silent = true }
+		vim.keymap.set("n", "+", "<C-a>", vim.tbl_extend("force", opts, { desc = "Incrementar numero" }))
+		vim.keymap.set("n", "<C-x>", "<C-x>", vim.tbl_extend("force", opts, { desc = "Decrementar numero" }))
+	end,
+})
+
 -- LaTeX: ajuste de línea visual y movimiento por línea en pantalla (solo en buffers tex)
 vim.api.nvim_create_autocmd("FileType", {
 	group = group,

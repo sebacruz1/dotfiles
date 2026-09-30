@@ -34,6 +34,7 @@ map("n", "+", "<C-a>", { noremap = true, desc = "Incrementar numero" })
 map("n", "q:", "<nop>")
 map("n", "q/", "<nop>")
 map("n", "q?", "<nop>")
+map("n", "<CR>", "i<CR><Esc>", { desc = "Inserta enter" })
 
 -- smart-splits: navegar panes
 map("n", "<C-h>", function()

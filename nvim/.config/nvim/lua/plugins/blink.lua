@@ -49,6 +49,14 @@ return {
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
 				providers = {
+					lsp = {
+						-- emmet_ls ofrece expandir "{}" a vacío en JSX/TSX; con preselect, <CR> borraba las llaves
+						transform_items = function(_, items)
+							return vim.tbl_filter(function(item)
+								return not (item.client_name == "emmet_ls" and item.label:match("^[%{%}%[%]%(%)]*$"))
+							end, items)
+						end,
+					},
 					snippets = {
 						min_keyword_length = 2,
 						score_offset = -3,

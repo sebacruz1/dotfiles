@@ -18,11 +18,11 @@ return {
 		}
 
 		dashboard.section.buttons.val = {
-			dashboard.button("f", " Buscar archivo", ":Telescope find_files<CR>"),
-			dashboard.button("r", " Archivos recientes", ":Telescope oldfiles<CR>"),
+			dashboard.button("f", " Buscar archivo", ":FzfLua files<CR>"),
+			dashboard.button("r", " Archivos recientes", ":FzfLua oldfiles<CR>"),
 			dashboard.button("n", " Nuevo archivo", ":ene <BAR> startinsert <CR>"),
-			dashboard.button("g", " Buscar texto", ":Telescope live_grep<CR>"),
-			dashboard.button("c", " Editar configuracion", ":Telescope find_files cwd=~/Documents/dotfiles/<CR>"),
+			dashboard.button("g", " Buscar texto", ":FzfLua live_grep<CR>"),
+			dashboard.button("c", " Editar configuracion", ":FzfLua files cwd=~/Documents/dotfiles/<CR>"),
 			dashboard.button("l", " Lazy", ":Lazy<CR>"),
 			dashboard.button("G", " Estado de Git", ":LazyGit<CR>"),
 			dashboard.button("q", " Salir", ":qa<CR>"),

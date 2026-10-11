@@ -94,15 +94,15 @@ return {
 					local opts = { buffer = args.buf, silent = true }
 
 					-- Keymaps generales
-					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+					vim.keymap.set("n", "gd", function() require("fzf-lua").lsp_definitions() end, opts)
 					vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+					vim.keymap.set("n", "gr", function() require("fzf-lua").lsp_references() end, opts)
 					vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 
 					if client and client.name == "vtsls" then
-						vim.keymap.set("n", "gD", vim.lsp.buf.type_definition, opts)
-						vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+						vim.keymap.set("n", "gD", function() require("fzf-lua").lsp_typedefs() end, opts)
+						vim.keymap.set("n", "gi", function() require("fzf-lua").lsp_implementations() end, opts)
 						vim.keymap.set("n", "<leader>oi", function()
 							organize_imports(client, args.buf)
 						end, { buffer = args.buf, desc = "Organize Imports" })

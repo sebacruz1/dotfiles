@@ -27,6 +27,26 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 	end,
 })
 
+-- oldfiles: guardar solo archivos que realmente se abrieron en una ventana.
+-- El LSP (rename, code actions, imports) lista buffers que nunca visitaste y terminan en shada.
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	group = group,
+	callback = function(args)
+		vim.b[args.buf].visited = true
+	end,
+})
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+	group = group,
+	callback = function()
+		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+			if vim.bo[buf].buflisted and not vim.b[buf].visited then
+				vim.bo[buf].buflisted = false
+			end
+		end
+	end,
+})
+
 vim.api.nvim_set_hl(0, "YankFlash", { bg = "#fffff0", fg = "#000000" })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Resaltar el texto copiado (yank)",

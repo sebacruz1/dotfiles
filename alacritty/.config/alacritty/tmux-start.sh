@@ -1,5 +1,5 @@
 #!/bin/sh
-# kitty abre tmux con esto: se une a lo que haya, deja que resurrect restaure
+# alacritty abre tmux con esto: se une a lo que haya, deja que resurrect restaure
 # o crea 0default si no hay nada guardado
 PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 

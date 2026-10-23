@@ -23,4 +23,4 @@ brew "python"
 brew "gnupg"
 brew "deno"
 
-cask "kitty"
+cask "alacritty"

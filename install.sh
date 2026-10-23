@@ -2,9 +2,9 @@
 set -e
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-KITTY_DIR="$HOME/.config/kitty"
+ALACRITTY_DIR="$HOME/.config/alacritty"
 
-PACKAGES=(git kitty nvim shell starship tmux)
+PACKAGES=(alacritty git nvim shell starship tmux)
 
 echo "==> Aplicando stow..."
 for pkg in "${PACKAGES[@]}"; do
@@ -12,13 +12,13 @@ for pkg in "${PACKAGES[@]}"; do
   echo "    stow: $pkg"
 done
 
-echo "==> Configurando kitty platform.conf..."
+echo "==> Configurando alacritty platform.toml..."
 if [[ "$(uname)" == "Darwin" ]]; then
-  ln -sf "$KITTY_DIR/macos.conf" "$KITTY_DIR/platform.conf"
-  echo "    kitty: platform.conf -> macos.conf"
+  ln -sf "$ALACRITTY_DIR/macos.toml" "$ALACRITTY_DIR/platform.toml"
+  echo "    alacritty: platform.toml -> macos.toml"
 elif [[ "$(uname)" == "Linux" ]]; then
-  ln -sf "$KITTY_DIR/linux.conf" "$KITTY_DIR/platform.conf"
-  echo "    kitty: platform.conf -> linux.conf"
+  ln -sf "$ALACRITTY_DIR/linux.toml" "$ALACRITTY_DIR/platform.toml"
+  echo "    alacritty: platform.toml -> linux.toml"
 fi
 
 echo "==> Listo."

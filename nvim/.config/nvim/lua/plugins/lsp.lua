@@ -39,6 +39,8 @@ return {
 					"texlab",
 					"vtsls",
 				},
+				-- Los servidores se activan a mano en config.lsp-native; evita que se levante ts_ls junto a vtsls
+				automatic_enable = false,
 			})
 		end,
 	},

@@ -85,6 +85,7 @@ return {
 		},
 		oldfiles = {
 			cwd_only = true,
+			stat_file = true, -- oculta archivos que ya no existen
 		},
 	},
 	---@diagnostic enable: missing-fields

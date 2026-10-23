@@ -1,0 +1,54 @@
+[general]
+live_config_reload = true
+import = ["~/.config/alacritty/platform.toml"]
+
+[terminal.shell]
+program = "/bin/sh"
+args = ["-c", "exec \"$HOME/.config/alacritty/tmux-start.sh\""]
+
+[window]
+decorations = "None"
+opacity = 0.8
+blur = true
+padding = { x = 2, y = 0 }
+dynamic_padding = false
+resize_increments = false
+option_as_alt = "None"
+
+[scrolling]
+history = 5000
+
+[font]
+normal      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
+bold        = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
+italic      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
+bold_italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
+
+# Color theme: Kanagawa Wave
+[colors.primary]
+background = "#1F1F28"
+foreground = "#DCD7BA"
+
+[colors.cursor]
+cursor = "#DCD7BA"
+text   = "#1F1F28"
+
+[colors.normal]
+black   = "#090618"
+red     = "#C34043"
+green   = "#76946A"
+yellow  = "#C0A36E"
+blue    = "#7E9CD8"
+magenta = "#957FB8"
+cyan    = "#6A9589"
+white   = "#C8C093"
+
+[colors.bright]
+black   = "#727169"
+red     = "#E82424"
+green   = "#98BB6C"
+yellow  = "#E6C384"
+blue    = "#7FB4CA"
+magenta = "#938AA9"
+cyan    = "#7AA89F"
+white   = "#DCD7BA"

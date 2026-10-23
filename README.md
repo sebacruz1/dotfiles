@@ -5,9 +5,9 @@
 ![Zsh](https://img.shields.io/badge/Shell-Zsh-89e051.svg?logo=gnu-bash&logoColor=white)
 ![Tmux](https://img.shields.io/badge/Terminal-Tmux-1BB91F?logo=tmux&logoColor=white)
 ![Neovim](https://img.shields.io/badge/Editor-Neovim-3ECF8E?logo=neovim&logoColor=white)
-![Kitty](https://img.shields.io/badge/Terminal-Kitty-pink?logo=&logoColor=white)
+![Alacritty](https://img.shields.io/badge/Terminal-Alacritty-F46D01?logo=alacritty&logoColor=white)
 ![Starship](https://img.shields.io/badge/Prompt-Starship-DD0B78?logo=&logoColor=white)
 ![GNU Stow](https://img.shields.io/badge/Made%20with-GNU%20Stow-orange)
 
 Colección personal de **dotfiles** y configuraciones para entornos de desarrollo.
-Incluye configuraciones de **Zsh**, **Git**, **Kitty**, **Tmux**, **Starship** y **Neovim**.
+Incluye configuraciones de **Zsh**, **Git**, **Alacritty**, **Tmux**, **Starship** y **Neovim**.

@@ -96,3 +96,10 @@ export PATH="$HOME/.local/bin:$PATH"
 
 if command -v zoxide >/dev/null 2>&1; then eval "$(zoxide init zsh)"; fi
 if command -v starship >/dev/null 2>&1; then eval "$(starship init zsh)"; fi
+
+# SSH con mi config de zsh sin instalar nada en el servidor (ver ~/.config/zsh-remote)
+zssh() {
+  local payload
+  payload=$(cat ~/.config/zsh-remote/zshrc ~/.aliases.zsh ~/.functions.zsh ~/.config/zsh-remote/overrides.zsh | base64 | tr -d '\n')
+  ssh -t "$@" "d=\$(mktemp -d); echo '$payload' | base64 -d > \$d/.zshrc; ZDOTDIR=\$d zsh -i; rm -rf \$d"
+}

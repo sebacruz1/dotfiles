@@ -29,21 +29,54 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 
 -- oldfiles: guardar solo archivos que realmente se abrieron en una ventana.
 -- El LSP (rename, code actions, imports) lista buffers que nunca visitaste y terminan en shada.
+-- Además se agregan a v:oldfiles al momento, para que <leader>b los muestre en la
+-- misma sesión (v:oldfiles solo se lee de shada al arrancar).
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	group = group,
 	callback = function(args)
-		vim.b[args.buf].visited = true
+		-- bufload() (lo que usa el LSP) dispara BufWinEnter en una ventana interna
+		-- tipo "autocmd"; eso no cuenta como abrirlo. Tampoco las flotantes.
+		if vim.fn.win_gettype() == "autocmd" or vim.api.nvim_win_get_config(0).relative ~= "" then
+			return
+		end
+		local buf = args.buf
+		vim.b[buf].visited = true
+
+		local file = vim.api.nvim_buf_get_name(buf)
+		if file == "" or vim.bo[buf].buftype ~= "" then
+			return
+		end
+		local oldfiles = { file }
+		for _, f in ipairs(vim.v.oldfiles) do
+			if f ~= file then
+				oldfiles[#oldfiles + 1] = f
+			end
+		end
+		vim.v.oldfiles = oldfiles
 	end,
 })
 
+-- Quita de la lista los buffers no visitados (shada ignora los no listados)
+local function unlist_unvisited()
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.bo[buf].buflisted and not vim.b[buf].visited then
+			vim.bo[buf].buflisted = false
+		end
+	end
+end
+
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	group = group,
+	callback = unlist_unvisited,
+})
+
+-- Escribir shada también al perder el foco: si tmux/el Mac matan nvim sin :q,
+-- los recientes de la sesión no se pierden.
+vim.api.nvim_create_autocmd({ "FocusLost", "VimSuspend" }, {
+	group = group,
 	callback = function()
-		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-			if vim.bo[buf].buflisted and not vim.b[buf].visited then
-				vim.bo[buf].buflisted = false
-			end
-		end
+		unlist_unvisited()
+		pcall(vim.cmd, "wshada")
 	end,
 })
 

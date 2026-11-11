@@ -4,6 +4,29 @@ HISTSIZE=200000
 SAVEHIST=200000
 setopt APPEND_HISTORY INC_APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE hup
 
+if [[ -n "$TMUX" && -n "$TMUX_PANE" ]]; then
+  _pane_key="$(tmux display-message -p -t "$TMUX_PANE" '#S_#I_#P' 2>/dev/null)"
+  if [[ -n "$_pane_key" ]]; then
+    _global_histfile="$HISTFILE"
+    _pane_histdir="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/tmux-history"
+    [[ -d "$_pane_histdir" ]] || mkdir -p "$_pane_histdir"
+    fc -R "$_global_histfile"
+    HISTFILE="$_pane_histdir/${_pane_key//[^A-Za-z0-9_.-]/_}"
+    [[ -f "$HISTFILE" ]] && fc -R "$HISTFILE"
+
+    _pane_hist_to_global() {
+      local nl=$'\n'
+      local cmd="${1%$'\n'}"
+      [[ -z "$cmd" || "$cmd" == ' '* ]] && return 0
+      print -r -- "${cmd//$nl/\\$nl}" >>"$_global_histfile"
+      return 0
+    }
+    autoload -Uz add-zsh-hook
+    add-zsh-hook zshaddhistory _pane_hist_to_global
+  fi
+  unset _pane_key
+fi
+
 export EDITOR=nvim
 export VISUAL=nvim
 export MANPAGER="nvim +Man!"
@@ -97,9 +120,3 @@ export PATH="$HOME/.local/bin:$PATH"
 if command -v zoxide >/dev/null 2>&1; then eval "$(zoxide init zsh)"; fi
 if command -v starship >/dev/null 2>&1; then eval "$(starship init zsh)"; fi
 
-# SSH con mi config de zsh sin instalar nada en el servidor (ver ~/.config/zsh-remote)
-zssh() {
-  local payload
-  payload=$(cat ~/.config/zsh-remote/zshrc ~/.aliases.zsh ~/.functions.zsh ~/.config/zsh-remote/overrides.zsh | base64 | tr -d '\n')
-  ssh -t "$@" "d=\$(mktemp -d); echo '$payload' | base64 -d > \$d/.zshrc; ZDOTDIR=\$d zsh -i; rm -rf \$d"
-}

@@ -49,7 +49,7 @@ fi
 ZPLUGINS="${ZDOTDIR:-$HOME}/.zsh_plugins.txt"
 ZSTATIC="${ZDOTDIR:-$HOME}/.zsh_plugins.zsh"
 
-if [[ ! -f "$ZPLUGINS" ]]; then
+if [[ ! -f "$ZPLUGINS" || "${ZDOTDIR:-$HOME}/.zshrc" -nt "$ZPLUGINS" ]]; then
   cat > "$ZPLUGINS" <<'EOF'
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/composer
@@ -57,6 +57,7 @@ ohmyzsh/ohmyzsh path:plugins/laravel
 ohmyzsh/ohmyzsh path:plugins/npm
 ohmyzsh/ohmyzsh path:plugins/docker
 ohmyzsh/ohmyzsh path:plugins/docker-compose
+ohmyzsh/ohmyzsh path:plugins/sudo
 paulirish/git-open
 fdellwing/zsh-bat
 Aloxaf/fzf-tab

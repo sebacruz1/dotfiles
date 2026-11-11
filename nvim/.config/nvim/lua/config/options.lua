@@ -45,6 +45,10 @@ opt.undodir = dirs.undo
 opt.backupdir = dirs.backup
 opt.undofile = true
 
+-- shada: '1000 archivos con marcas (oldfiles); el default '100 es global y con
+-- oldfiles filtrado por proyecto se queda corto
+opt.shada = "!,'1000,<50,s10,h,r/tmp/,r/private/"
+
 vim.diagnostic.config({
 	virtual_text = {
 		prefix = "●",

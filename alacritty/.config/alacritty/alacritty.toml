@@ -3,21 +3,21 @@ live_config_reload = true
 import = ["~/.config/alacritty/platform.toml"]
 [window]
 decorations = "None"
-opacity = 0.8
-blur = true
-padding = { x = 2, y = 0 }
-dynamic_padding = false
+dynamic_padding = true
 resize_increments = false
 option_as_alt = "None"
 
 [scrolling]
 history = 5000
 
+[selection]
+save_to_clipboard = true
+
 [font]
-normal      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
-bold        = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
-italic      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
-bold_italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
+normal      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
+bold        = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
+italic      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
+bold_italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
 
 # Color theme: Kanagawa Wave
 [colors.primary]

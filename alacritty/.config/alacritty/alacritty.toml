@@ -15,6 +15,9 @@ option_as_alt = "None"
 [scrolling]
 history = 5000
 
+[selection]
+save_to_clipboard = true
+
 [font]
 normal      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
 bold        = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }

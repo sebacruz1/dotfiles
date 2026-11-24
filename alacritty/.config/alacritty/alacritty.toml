@@ -14,10 +14,10 @@ history = 5000
 save_to_clipboard = true
 
 [font]
-normal      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
-bold        = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
-italic      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
-bold_italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Semibold" }
+normal      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Regular" }
+bold        = { family = "JetBrainsMonoNL Nerd Font Mono", style = "SemiBold" }
+italic      = { family = "JetBrainsMonoNL Nerd Font Mono", style = "Italic" }
+bold_italic = { family = "JetBrainsMonoNL Nerd Font Mono", style = "SemiBold Italic" }
 
 # Color theme: Kanagawa Wave
 [colors.primary]

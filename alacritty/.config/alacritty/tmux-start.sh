@@ -4,10 +4,14 @@
 PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 if tmux has-session 2>/dev/null; then
-  exec tmux attach
+  tmux attach
 elif [ -e "$HOME/.local/share/tmux/resurrect/last" ]; then
   # sesión temporal: resurrect elimina la sesión "0" al restaurar desde cero
-  exec tmux new-session -s 0
+  tmux new-session -s 0
 else
-  exec tmux new-session -s 0default
+  tmux new-session -s 0default
 fi
+
+# al hacer detach (C-a d) la sesión sigue viva y queda una zsh normal en la
+# ventana (p. ej. para ssh + tmux remoto); `tmux attach` para volver
+exec /bin/zsh -l

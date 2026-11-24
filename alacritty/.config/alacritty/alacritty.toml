@@ -1,11 +1,6 @@
 [general]
 live_config_reload = true
 import = ["~/.config/alacritty/platform.toml"]
-
-[terminal.shell]
-program = "/bin/sh"
-args = ["-c", "exec \"$HOME/.config/alacritty/tmux-start.sh\""]
-
 [window]
 decorations = "None"
 opacity = 0.8
